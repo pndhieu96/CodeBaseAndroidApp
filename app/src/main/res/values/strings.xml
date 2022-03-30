@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">CodeBaseAndroidApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="home_fragment">Home fragment</string>
+    <string name="detail_fragment">detail fragment</string>
+    <string name="my_list_fragment">My list fragment</string>
+    <string name="search_fragment">Search fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_empty">Does not match any results</string>
+
+    <string name="file_size_landscape">w400</string>
+    <string name="file_size_portrait">w200</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/extenstion_navigation"
+    app:startDestination="@id/extenstionFragment">
+
+    <fragment
+        android:id="@+id/extenstionFragment"
+        android:name="com.example.codebaseandroidapp.ui.ExtenstionFragment"
+        android:label="ExtenstionFragment" >
+        <action
+            android:id="@+id/action_extenstionFragment_to_serviceFragment"
+            app:destination="@id/serviceFragment" />
+        <action
+            android:id="@+id/action_extenstionFragment_to_workManagerFragment"
+            app:destination="@id/workManagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/serviceFragment"
+        android:name="com.example.codebaseandroidapp.ui.ServiceFragment"
+        android:label="ServiceFragment" />
+    <fragment
+        android:id="@+id/workManagerFragment"
+        android:name="com.example.codebaseandroidapp.ui.WorkManagerFragment"
+        android:label="fragment_work_manager"
+        tools:layout="@layout/fragment_work_manager" />
+</navigation>
