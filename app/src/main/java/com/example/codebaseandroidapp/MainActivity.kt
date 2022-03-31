@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
         val drawableHome = ContextCompat.getDrawable(this, R.drawable.home)
         val drawableSearch = ContextCompat.getDrawable(this, R.drawable.search)
         val drawableMyList = ContextCompat.getDrawable(this, R.drawable.heart)
+        val drawableExtension = ContextCompat.getDrawable(this, R.drawable.extension)
         when(position) {
             0 -> {
                 tab.text = "Home"
@@ -96,14 +97,18 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
                 tab.text = "My List"
                 tab.setIcon(drawableMyList)
             }
+            3 -> {
+                tab.text = "Extenstion"
+                tab.setIcon(drawableExtension)
+            }
         }
     }
 
     fun onBackPress() {
-        if(binding?.viewPager?.currentItem == 0) {
+        if(binding.viewPager.currentItem == 0) {
             finish()
         } else {
-            binding?.viewPager?.setCurrentItem(0)
+            binding.viewPager.setCurrentItem(0)
         }
     }
 }

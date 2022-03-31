@@ -7,10 +7,11 @@
     tools:context=".ui.ExtenstionRootFragment">
 
     <fragment
+        android:id="@+id/extenstion_nav_host_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/search_navigation"/>
+        app:navGraph="@navigation/extenstion_navigation"/>
 
 </FrameLayout>

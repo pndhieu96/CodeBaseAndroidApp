@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.codebaseandroidapp.R
+import com.example.codebaseandroidapp.databinding.FragmentExtenstionBinding
 
 class ExtenstionRootFragment : Fragment() {
 
@@ -17,14 +20,13 @@ class ExtenstionRootFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_extenstion_root, container, false)
     }
 
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             ExtenstionRootFragment().apply {
 
             }

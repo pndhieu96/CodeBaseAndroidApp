@@ -11,4 +11,6 @@
 
     <string name="file_size_landscape">w400</string>
     <string name="file_size_portrait">w200</string>
+    <string name="media_playback">Media playback</string>
+    <string name="notification_title">Media playback</string>
 </resources>

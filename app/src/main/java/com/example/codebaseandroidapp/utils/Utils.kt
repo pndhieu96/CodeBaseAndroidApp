@@ -1,19 +1,26 @@
 package com.example.codebaseandroidapp.utils
 
-import android.app.Activity
+import android.app.*
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.RemoteViews
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.getSystemService
-
-
-
-
-
-
+import com.example.codebaseandroidapp.Application
+import com.example.codebaseandroidapp.MainActivity
+import com.example.codebaseandroidapp.R
+import com.example.codebaseandroidapp.receiver.NotificationActionReceiver
+import com.example.codebaseandroidapp.service.SongService
+import java.io.*
+import java.net.URL
 
 
 class Utils {
@@ -49,6 +56,125 @@ class Utils {
         fun showKeyBoard(activity: Activity, view: EditText) {
             val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        }
+
+        fun download(urlString: String) {
+            try {
+                // Lấy đường dẫn thư mục lưu ảnh
+                val songDir = songDirectory()
+                // Kiểm tra thư mục đã tồn tại chưa
+                if (!songDir.exists()) {
+                    // Tạo thư mục
+                    songDir.mkdirs()
+                }
+
+                // Lấy đường dẫn đến file trên thiết bị
+                val f = songFile()
+                // Lấy URL của file nhạc ở trên internet
+                val url = URL(urlString)
+
+                //Đọc file theo định dạng byte
+                val input: InputStream = BufferedInputStream(url.openStream())
+                //Viết file theo định dạng byte
+                val output: OutputStream = FileOutputStream(f)
+
+                val data = ByteArray(1024)
+
+                var total = 0L
+                // Đọc dữ liệu file nhạc tải về từ internet
+                var count = input.read(data)
+                while (count != -1) {
+                    total++
+                    Log.i("SongUtils", "$total")
+                    // GHi liệu file nhạc tải về vào thư mục trên máy
+                    output.write(data, 0, count)
+                    count = input.read(data)
+                }
+                //Xoá dữ liệu đang được lưu trong output stream và buộc nó ghi dữ liệu xuống điểm đích.
+                output.flush()
+                //Đóng output stream, giải phóng tất cả các tài nguyên đang được kết nối với luồng này.
+                output.close()
+                //Đóng input stream, giải phóng tất cả các tài nguyên đang được kết nối với luồng này.
+                input.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        fun delete(directory: File) {
+            try {
+                if (directory.exists()) {
+                    val files: Array<File> = directory.listFiles()
+                    if (files != null) {
+                        var j: Int
+                        j = 0
+                        while (j < files.size) {
+                            System.out.println(files[j].absolutePath)
+                            System.out.println(files[j].delete())
+                            j++
+                        }
+                    }
+                    if (directory.delete()) {
+                        Log.i("Utils.delete","file Deleted :" + directory.absolutePath);
+                    } else {
+                        Log.i("Utils.delete","file not Deleted :" + directory.absolutePath);
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        fun songDirectory() = Application.getAppContext().getDir(ConstantUtils.SONGS_DIRECTORY, Context.MODE_PRIVATE)
+
+        fun songFile() = File(songDirectory(), ConstantUtils.SONG_FILENAME)
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun createChannel(context: Context) {
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(
+                SongService.CHANNEL_ID, context.getString(R.string.media_playback),
+                NotificationManager.IMPORTANCE_HIGH)
+            channel.setShowBadge(false)
+            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        fun createNotification(context: Context): Notification {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createChannel(context)
+            }
+
+            val notificationIntent = Intent(context, MainActivity::class.java)
+            notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            val intent = PendingIntent.getActivity(context, 0, notificationIntent, 0)
+
+            val contentView = RemoteViews(context.packageName, R.layout.notification_custom)
+            contentView.setImageViewResource(R.id.image, R.drawable.song)
+            contentView.setTextViewText(R.id.title, context.getString(R.string.notification_title))
+            contentView.setTextViewText(R.id.text, "This is a custom layout")
+            val buttonsIntent = Intent(context, NotificationActionReceiver::class.java)
+
+            if(Application.isPlayingSong) {
+                contentView.setImageViewResource(R.id.btnPlay, R.drawable.pause)
+                buttonsIntent.putExtra("ACTION", SongService.ACTION_PAUSE)
+            } else {
+                contentView.setImageViewResource(R.id.btnPlay, R.drawable.play)
+                buttonsIntent.putExtra("ACTION", SongService.ACTION_PLAY)
+            }
+            contentView.setOnClickPendingIntent(
+                R.id.btnPlay,
+                PendingIntent.getBroadcast(context, 0, buttonsIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+            )
+
+            return NotificationCompat.Builder(context, SongService.CHANNEL_ID)
+                .setContentIntent(intent)
+                .setOnlyAlertOnce(true)
+                .setAutoCancel(false)
+                .setSmallIcon(R.drawable.song)
+                .setCustomContentView(contentView)
+                .setCustomBigContentView(contentView)
+                .build()
         }
     }
 }

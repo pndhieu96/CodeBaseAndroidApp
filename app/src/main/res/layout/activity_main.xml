@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/fragment_home_tablayout_bottom_height"
             android:background="@color/black"
+            app:tabTextAppearance="@style/TabTextStyle"
             app:tabIconTint="@color/tab_item_selector"
             app:tabIndicatorHeight="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -6,5 +6,8 @@ class ConstantUtils {
         const val FILE_SIZE_LANDSCAPE = "w400"
         const val FILE_SIZE_PORTRAIT = "w200"
         const val BASE_URL = "https://api.themoviedb.org/3/"
+        const val SONG_URL = "https://docs.google.com/uc?id=1abhacJoSwGnbg89tRYHyGpTyfMskCXT3&export=download"
+        const val SONGS_DIRECTORY = "songs"
+        const val SONG_FILENAME = "siren.mp3"
     }
 }
