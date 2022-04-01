@@ -22,6 +22,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
+/**
+ * Service là 1 thành phần có thể thực hiện các tác vụ lâu dài trong backgroud và nó không cung
+ * cấp 1 giao diện người dùng, Và có thể tiếp tục chạy trong background ngay cả khi người dùng chuyển
+ * sang ứng dụng khác hay ứng dụng bị phá huỷ
+ *
+ * Có 3 loại service cơ bản:
+ * Service-1. Foreground service:
+ * Thực hiện 1 số tác vụ mà người dùng chú ý, có thể thấy rõ ràng. Ví dụ như có thể chơi 1 một bản nhạc và
+ * control nó bằng Foreground Service. Foreground Service bắt buộc phải hiển thị một Notification. Foreground
+ * Service có thể tiếp tục chạy ngay cả khi người dùng không tương tác với ứng dụng, ứng dụng chạy trong nền, hãy
+ * đã bị tắt bởi người dùng.
+ */
 class SongService : Service() {
     companion object {
         const val CHANNEL_ID = "media_playback_channel"

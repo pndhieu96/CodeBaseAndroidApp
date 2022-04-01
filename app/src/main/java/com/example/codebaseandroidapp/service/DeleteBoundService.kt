@@ -8,6 +8,15 @@ import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.codebaseandroidapp.utils.Utils
 
+/**
+ * (Bound Service)
+ * Service-3. Bound Service:
+ * Service là bound khi một thành phần của ứng dụng ràng buộc với nó bằng lời gọi
+ * bindService(). Một Bound Service cung cấp một giao diện client-server cho phép các thành phần tương
+ * tác với nó và nhận kết quả. Một Bound Service chạy khi có ít nhất một thành phần ràng buộc với nó.
+ * Có thể có nhiều thành phần ràng buộc với Bound Service cùng lúc, nhưng khi tất tháo bỏ ràng buộc với
+ * lời gọi UnBound thì nó sẽ Destroy.
+ */
 class DeleteBoundService : Service() {
 
     private val mBinder: IBinder = DeleteBoundServiceBinder()

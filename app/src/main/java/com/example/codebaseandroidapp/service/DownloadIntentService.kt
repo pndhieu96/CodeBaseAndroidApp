@@ -7,6 +7,12 @@ import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.codebaseandroidapp.utils.Utils
 
+/**
+ * (UnBound Service)
+ * Service-2.1 Intent Service:
+ * Để thực hiện các nhiệm vụ một lần duy nhất, nghĩa là khi thực hiện xong
+ * nhiệm vụ của mình thì dịch vụ sẽ tự huỷ
+ */
 class DownloadIntentService : IntentService("DownloadIntentService") {
 
     companion object {
