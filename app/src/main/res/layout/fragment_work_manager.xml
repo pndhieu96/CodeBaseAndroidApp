@@ -91,6 +91,7 @@
                     android:id="@+id/go_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:text="@string/go"
                     />
 
@@ -100,6 +101,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/see_file"
                     android:visibility="gone"
+                    android:textColor="@color/white"
                     tools:visibility="visible" />
 
             </LinearLayout>
