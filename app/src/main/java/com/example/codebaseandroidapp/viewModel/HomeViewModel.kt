@@ -11,6 +11,14 @@ import retrofit2.HttpException
 import java.lang.Exception
 import javax.inject.Inject
 
+/**
+ * Hilt-3
+ * @Inject constructor
+ * Để chỉ cho hilt cách cung cấp instance của đối tượng
+ *
+ * @HiltViewModel
+ * Để chỉ cho hilt cách cung cấp instance của ViewModel
+ */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     val movieRepository: MovieRepository

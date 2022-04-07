@@ -9,12 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeChildBinding
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeChildLanscapeBinding
+import com.example.codebaseandroidapp.di.ActitvityAbstractModule
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils.Companion.getImagePath
+import javax.inject.Inject
 
 private const val ITEM_TYPE_PORTRAIT = 1
-class HomeChildPortraitRecycleViewAdapter : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
+class HomeChildPortraitRecycleViewAdapter
+    @Inject constructor(
+        @ActitvityAbstractModule.MovieItemCallBack
+        movieCallBack: DiffUtil.ItemCallback<Movie>
+    ): ListAdapter<Movie, RecyclerView.ViewHolder>(
+        movieCallBack
+    ) {
     private var callBack: MovieListen? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

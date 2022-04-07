@@ -5,6 +5,7 @@ import com.example.codebaseandroidapp.model.Genres
 import com.example.codebaseandroidapp.model.Movies
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.example.codebaseandroidapp.utils.ConstantUtils.Companion.API_KEY
+import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -16,6 +17,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import javax.inject.Inject
+import javax.inject.Singleton
 
 //Một retrofit service để xử lý các http request tới web service để lấy dữ liệu
 // và nhận dữ liệu trả về

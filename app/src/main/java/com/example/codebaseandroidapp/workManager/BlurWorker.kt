@@ -17,6 +17,17 @@ import com.example.codebaseandroidapp.utils.Utils.Companion.writeBitmapToFile
 
 /**
  * WorkManager-1
+ * Đểu thực hiện các công việc trong Background
+ * (Opportunistic execution) Nó thực hiện công việc ngay khi có thể
+ * (Guaranteed execution) Nó quan tâm đến logic để bắt đầu công việc
+    * trong nhiều tình huống khác nhau, ngay cả khi bạn điều hướng ra khỏi ứng dụng
+ * Nó có 3 thành phần chính:
+    * Work: Nơi công việc thực sự được thực thi
+    * WorkRequest: Đại diện cho yêu cầu thực thi 1 số công việc cụ thể
+    * WorkManager: Lớp thực sự schedules (lập lịch) cho WorkRequest và khiến nó chạy
+ * */
+
+ /*
  * Worker:
  * Nơi đặt code cho một công việc mà bạn muốn thực thi trong backgroud
  * Extend Worker class and override doWork() Method (chức năng)

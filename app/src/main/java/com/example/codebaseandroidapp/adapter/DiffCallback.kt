@@ -3,8 +3,9 @@ package com.example.codebaseandroidapp.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.model.MoviesWithGenre
+import javax.inject.Inject
 
-class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
+class MovieDiffCallback @Inject constructor() : DiffUtil.ItemCallback<Movie>() {
     override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
         return oldItem.id == newItem.id
     }
@@ -14,7 +15,7 @@ class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
     }
 }
 
-class MoviesWithGenreDiffCallback : DiffUtil.ItemCallback<MoviesWithGenre>() {
+class MoviesWithGenreDiffCallback @Inject constructor() : DiffUtil.ItemCallback<MoviesWithGenre>() {
     override fun areItemsTheSame(oldItem: MoviesWithGenre, newItem: MoviesWithGenre): Boolean {
         return oldItem.id == newItem.id
     }

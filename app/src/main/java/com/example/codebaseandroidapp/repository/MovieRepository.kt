@@ -1,18 +1,15 @@
 package com.example.codebaseandroidapp.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.codebaseandroidapp.database.AppDatabase
-import com.example.codebaseandroidapp.database.Dao.GenreDao
 import com.example.codebaseandroidapp.di.AppModule
 import com.example.codebaseandroidapp.model.*
 import com.example.codebaseandroidapp.network.MoviePagingSource
 import com.example.codebaseandroidapp.network.NetWorkService
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

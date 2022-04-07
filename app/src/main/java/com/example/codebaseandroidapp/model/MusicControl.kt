@@ -9,8 +9,25 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Hilt-4
+ * Xác định phạm vi của instance bằng những chú thích như:
+ *
+ * @singleton để tạo đối tượng ở phạm vi application, có nghĩa luôn truy cập đến 1 instance
+ * duy nhất của đối tượng trong cả ứng dụng
+ *
+    * @ActivityRetainedScoped
+    * @ServiceScoped
+         *
+         * @ActivityScoped để tạo đối tượng ở phạm vi của 1 activity, có nghĩa là luôn truy cập đến
+         * 1 instance của đối tượng trong 1 activity
+         * @ViewModelScoped
+             *
+             * @FragmentScoped
+             * @ViewScoped
+ */
 @Singleton
-class MusicControl @Inject constructor (@ApplicationContext context: Context?) {
+class MusicControl @Inject constructor (@ApplicationContext context: Context) {
     private var mContext: Context? = context
     var mMediaPlayer: MediaPlayer? = null
 

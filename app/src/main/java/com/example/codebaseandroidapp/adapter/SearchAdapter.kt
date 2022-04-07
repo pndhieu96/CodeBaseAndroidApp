@@ -13,7 +13,6 @@ import com.example.codebaseandroidapp.utils.Utils
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class SearchAdapter @Inject constructor():
     PagingDataAdapter<Movie, SearchAdapter.ViewHolder>(MovieDiffCallback()) {
 

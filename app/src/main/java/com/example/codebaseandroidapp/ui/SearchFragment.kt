@@ -3,6 +3,7 @@ package com.example.codebaseandroidapp.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.codebaseandroidapp.MainActivity
@@ -58,7 +60,13 @@ class SearchFragment : Fragment() {
         navController = findNavController(this)
 
         val layoutManager = GridLayoutManager(requireContext(), 2)
+        // Paging-3
+        // addLoadStateListener truyền vào 1 CombinedLoadStates: để lắng nghe trạng thái hiện tại của việc load dữ liệu như
+            // CombinedLoadStates.refresh: Đại diện cho trạng thái khi bắt đầu tải
+            // CombinedLoadStates.prepend: Đại diện cho trạng thái tải khi bắt đầu danh sách
+            // CombinedLoadStates.append: Đại diện cho trạng thái tải khi ở cuối danh sách
         adapter.addLoadStateListener { loadState ->
+            Log.d("SearchFragment", loadState.toString())
             if (loadState.refresh is LoadState.Loading) {
                 binding?.progressBar?.visibility = VISIBLE
             } else {
@@ -71,6 +79,7 @@ class SearchFragment : Fragment() {
                     loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
                     else -> null
                 }
+
                 if(error?.error?.message.equals("-1")) {
                     binding?.tvNotFound?.visibility = VISIBLE
                     binding?.list?.visibility = GONE
@@ -117,6 +126,8 @@ class SearchFragment : Fragment() {
                 if(!viewModel.currentKey.equals(s.toString())) {
                     viewModel.searchMovies(s.toString())
                     lifecycleScope.launch {
+                        // Paging-2
+                        // collectLatest: lắng nghe khi một padingData được emit từ Flow
                         viewModel.searchPagerFlow.collectLatest {
                             adapter.submitData(it)
                         }

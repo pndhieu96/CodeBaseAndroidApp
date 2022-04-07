@@ -1,5 +1,7 @@
 package com.example.codebaseandroidapp.adapter
 
+import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,17 +9,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.example.codebaseandroidapp.Application
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentBinding
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentSliderBinding
-import com.example.codebaseandroidapp.model.Movie
+import com.example.codebaseandroidapp.di.ActitvityAbstractModule
 import com.example.codebaseandroidapp.model.MoviesWithGenre
-import com.example.codebaseandroidapp.utils.Utils
 import com.smarteist.autoimageslider.SliderView
 
 import com.smarteist.autoimageslider.SliderAnimations
 
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,18 +32,48 @@ private const val ITEM_TYPE_SLIDER = 0
 private const val ITEM_TYPE_LANSCAPE = 1
 private const val ITEM_TYPE_PORTRAIT = 2
 
-@Singleton
-class HomeParentRecycleViewAdapter @Inject constructor():
-    ListAdapter<MoviesWithGenre, RecyclerView.ViewHolder>(MoviesWithGenreDiffCallback()) {
+/**
+ * Hilt-7
+ * Sử dụng EntryPoint để inject những instances của những dependencies cho những class mà không
+ * được hỗ trợ bởi hilt.
+ */
+
+class HomeParentRecycleViewAdapter @Inject constructor(
+        @ActitvityAbstractModule.MovieWithGenreItemCallBack
+        movieCallBack: DiffUtil.ItemCallback<MoviesWithGenre>,
+        activity: Activity
+    ): ListAdapter<MoviesWithGenre, RecyclerView.ViewHolder>(
+        movieCallBack
+    ) {
+
+    val hiltEntryPoint = EntryPointAccessors.fromActivity(
+        activity,
+        HomeParentRecycleViewAdapterEntryPoint::class.java
+    )
+
+    @InstallIn(ActivityComponent::class)
+    @EntryPoint
+    interface HomeParentRecycleViewAdapterEntryPoint {
+        fun homeChildLanscapeRecycleViewAdapter() : HomeChildLanscapeRecycleViewAdapter
+        fun homeChildPortraintRecycleViewAdapter() : HomeChildPortraitRecycleViewAdapter
+    }
+
+    fun getHomeChildLanscapeRecycleViewAdapter(): HomeChildLanscapeRecycleViewAdapter {
+        return hiltEntryPoint.homeChildLanscapeRecycleViewAdapter()
+    }
+
+    fun getHomeChildPortraitRecycleViewAdapter(): HomeChildPortraitRecycleViewAdapter {
+        return hiltEntryPoint.homeChildPortraintRecycleViewAdapter()
+    }
 
     private var callBack: MovieListen? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when(viewType) {
             ITEM_TYPE_SLIDER -> return SliderViewHolder.from(parent)
-            ITEM_TYPE_LANSCAPE -> return LanscapeViewHolder.from(parent)
-            ITEM_TYPE_PORTRAIT -> return PortraitViewHolder.from(parent)
-            else -> return PortraitViewHolder.from(parent)
+            ITEM_TYPE_LANSCAPE -> return LanscapeViewHolder.from(parent, getHomeChildLanscapeRecycleViewAdapter())
+            ITEM_TYPE_PORTRAIT -> return PortraitViewHolder.from(parent, getHomeChildPortraitRecycleViewAdapter())
+            else -> return PortraitViewHolder.from(parent, getHomeChildPortraitRecycleViewAdapter())
         }
     }
 
@@ -78,8 +115,10 @@ class HomeParentRecycleViewAdapter @Inject constructor():
         this.callBack = mCallback;
     }
 
-    class LanscapeViewHolder private constructor(val binding: RecycleviewItemHomeParentBinding): RecyclerView.ViewHolder(binding.root) {
-        val adapter = HomeChildLanscapeRecycleViewAdapter()
+    class LanscapeViewHolder private constructor(
+        val binding: RecycleviewItemHomeParentBinding,
+        val adapter: HomeChildLanscapeRecycleViewAdapter
+    ): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(moviesWithGenre: MoviesWithGenre) {
             binding.title.text = moviesWithGenre.name
@@ -93,16 +132,18 @@ class HomeParentRecycleViewAdapter @Inject constructor():
         }
 
         companion object {
-            fun from(parent: ViewGroup): LanscapeViewHolder {
+            fun from(parent: ViewGroup, adapter: HomeChildLanscapeRecycleViewAdapter): LanscapeViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = RecycleviewItemHomeParentBinding.inflate(layoutInflater, parent, false)
-                return LanscapeViewHolder(binding)
+                return LanscapeViewHolder(binding, adapter)
             }
         }
     }
 
-    class PortraitViewHolder private constructor(val binding: RecycleviewItemHomeParentBinding): RecyclerView.ViewHolder(binding.root) {
-        val adapter = HomeChildPortraitRecycleViewAdapter()
+    class PortraitViewHolder private constructor(
+        val binding: RecycleviewItemHomeParentBinding,
+        val adapter: HomeChildPortraitRecycleViewAdapter
+    ): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(moviesWithGenre: MoviesWithGenre) {
             binding.title.text = moviesWithGenre.name
@@ -116,10 +157,10 @@ class HomeParentRecycleViewAdapter @Inject constructor():
         }
 
         companion object {
-            fun from(parent: ViewGroup): PortraitViewHolder {
+            fun from(parent: ViewGroup, adapter: HomeChildPortraitRecycleViewAdapter): PortraitViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = RecycleviewItemHomeParentBinding.inflate(layoutInflater, parent, false)
-                return PortraitViewHolder(binding)
+                return PortraitViewHolder(binding, adapter)
             }
         }
     }

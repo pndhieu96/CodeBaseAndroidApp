@@ -12,6 +12,17 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Hilt-2
+ * @AndroidEntryPoint:
+ * Tạo một bộ chứa những dependencies cần thiết cho android class, tuân theo vòng đời của android class
+ * và cho phép inject những instances của những phụ thuộc đó vào lớp để sử dụng
+ * Nó hỗ trợ cho những class thường dùng trong android như:
+ * activity, fragment, view, service, broadcastReceiver
+ *
+ * Field injection:
+ * Để lấy những instances cần thiết để sử dụng, ta chú thích @Inject trên field muốn được inject
+ */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStrategy {
 

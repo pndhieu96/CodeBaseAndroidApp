@@ -1,11 +1,14 @@
 package com.example.codebaseandroidapp.utils
 
 import android.app.*
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
@@ -301,6 +304,42 @@ class Utils {
                 }
             }
             return Uri.fromFile(outputFile)
+        }
+
+        @Throws(IOException::class)
+        fun saveBitmap(
+            context: Context, bitmap: Bitmap, format: Bitmap.CompressFormat,
+            mimeType: String, displayName: String
+        ): Uri {
+
+            val values = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
+                put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+            }
+
+            var uri: Uri? = null
+
+            return runCatching {
+                with(context.contentResolver) {
+                    insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)?.also {
+                        uri = it // Keep uri reference so it can be removed on failure
+
+                        openOutputStream(it)?.use { stream ->
+                            if (!bitmap.compress(format, 95, stream))
+                                throw IOException("Failed to save bitmap.")
+                        } ?: throw IOException("Failed to open output stream.")
+
+                    } ?: throw IOException("Failed to create new MediaStore record.")
+                }
+            }.getOrElse {
+                uri?.let { orphanUri ->
+                    // Don't leave an orphan entry in the MediaStore
+                    context.contentResolver.delete(orphanUri, null, null)
+                }
+
+                throw it
+            }
         }
     }
 }

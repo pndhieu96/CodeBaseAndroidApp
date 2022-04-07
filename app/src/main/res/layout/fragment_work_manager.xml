@@ -69,11 +69,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/cancel_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cancel_work"
+                        android:textColor="@color/white"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/bg_rounded_border"
                         android:visibility="gone"
                         />
 
@@ -83,25 +86,30 @@
                         android:layout_height="wrap_content"
                         android:indeterminate="true"
                         android:visibility="gone"
+                        android:layout_marginLeft="10dp"
                         android:layout_gravity="center_horizontal"
                         />
                 </LinearLayout>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/go_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_rounded_border"
                     android:text="@string/go"
                     />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/see_file_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/see_file"
                     android:visibility="gone"
                     android:textColor="@color/white"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/bg_rounded_border"
                     tools:visibility="visible" />
 
             </LinearLayout>
