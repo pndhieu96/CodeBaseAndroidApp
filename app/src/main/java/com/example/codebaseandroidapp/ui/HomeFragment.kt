@@ -32,14 +32,15 @@ class homeFragment : Fragment() {
 
     private var binding: FragmentHomeBinding? = null
     private lateinit var navController: NavController
+
     @Inject
     lateinit var adapter: HomeParentRecycleViewAdapter
 
-    // cách khác để khởi tạo 1 viewmodel từ by viewModels
+    //    cách khác để khởi tạo 1 viewmodel từ by viewModels
 //    private val viewModel: HomeViewModel by viewModels{
 //        HomeViewModelFactory((requireActivity().application as Application).repository)
 //    }
-    //inject instance cua viewmodel
+//    inject instance cua viewmodel
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onAttach(context: Context) {
@@ -58,17 +59,27 @@ class homeFragment : Fragment() {
     ): View? {
         Log.d("LC-homeFragment", "onCreateView")
         binding = FragmentHomeBinding.inflate(inflater)
+
+//      Navigation-4
+//      NavController
+//      Dùng findNavController trong fragment là 1 destination trong navGraph để lấy được
+//      instance của 1 navController
         navController = findNavController(this)
 
-        // cách khác để khởi tạo 1 viewmodel từ viewModelFactory
-//        viewModel = ViewModelProvider(this,
-//            HomeViewModelFactory((requireActivity().application as Application).repository)
-//        ).get(HomeViewModel::class.java)
+//      cách khác để khởi tạo 1 viewmodel từ viewModelFactory
+//      viewModel = ViewModelProvider(this,
+//          HomeViewModelFactory((requireActivity().application as Application).repository)
+//      ).get(HomeViewModel::class.java)
 
         binding!!.recycleViewParent.adapter = adapter
         binding!!.recycleViewParent.layoutManager = LinearLayoutManager(activity)
         showLoadding()
-        adapter.setCallBack(MovieListen{
+        adapter.setCallBack(MovieListen {
+//          Navigation-5
+//          NavController
+//          Dùng navCOntroller.navigate để navigate từ destination hiện tại đến 1 destination khác
+//          trong navGraph và truyền vào action hoặc id của destination tương ứng kèm các arguments cần
+//          thiết dưới dạng 1 bundle
             val bundle = bundleOf("movieId" to it.id.toString())
             navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
         })
@@ -107,8 +118,9 @@ class homeFragment : Fragment() {
         Log.d("LC-homeFragment", "onResume")
         super.onResume()
 
-        if(viewModel.moviesWithGenre.value.isNullOrEmpty()
-            || viewModel.moviesWithGenre.value?.size == 0) {
+        if (viewModel.moviesWithGenre.value.isNullOrEmpty()
+            || viewModel.moviesWithGenre.value?.size == 0
+        ) {
             showLoadding()
             viewModel.getGenres()
         }
@@ -117,7 +129,7 @@ class homeFragment : Fragment() {
             this,  // LifecycleOwner
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if(requireActivity() is MainActivity) {
+                    if (requireActivity() is MainActivity) {
                         (requireActivity() as MainActivity).onBackPress()
                     }
                 }
@@ -162,7 +174,7 @@ class homeFragment : Fragment() {
         binding!!.tvError.visibility = GONE
     }
 
-    fun showList(list: List<MoviesWithGenre>){
+    fun showList(list: List<MoviesWithGenre>) {
         adapter.submitList(list)
         binding!!.progressBar.visibility = GONE
         binding!!.tvError.visibility = GONE

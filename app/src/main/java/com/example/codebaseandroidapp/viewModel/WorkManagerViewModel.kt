@@ -31,6 +31,9 @@ class WorkManagerViewModel @Inject constructor(
 
     init {
         imageUri = getImageUri(context)
+
+        //WorkManager-4
+        // Lấy trạng thái và kết quả trả về của 1 worker thông qua TAG dưới dạng 1 livedata
         outputWorkInfos = workManager.getWorkInfosByTagLiveData(TAG_OUTPUT)
     }
     /**
@@ -56,6 +59,7 @@ class WorkManagerViewModel @Inject constructor(
         // Add WorkRequest to Cleanup temporary images
         // Thay thế beginWith thành beginUniqueWork để sử dụng 1 work là unique (duy nhất)
         // Nó có thể REPLACE, KEEP hoặc APPEND
+
         var continuation: WorkContinuation = workManager
         //.beginWith(OneTimeWorkRequest.from(CleanupWorker::class.java))
             .beginUniqueWork(

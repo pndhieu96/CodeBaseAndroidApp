@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--Navigation-3-->
+    <!--NavHostFragment-->
+    <!--Khai báo 1 navHostFragment trong file layout để hiện thị-->
+    <!--destination tương ứng của 1 navigation graph-->
     <fragment
         android:id="@+id/home_nav_host_fragment"
         android:layout_width="match_parent"

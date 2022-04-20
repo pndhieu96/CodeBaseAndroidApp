@@ -31,6 +31,9 @@ class WorkManagerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestPermissions()
+
+        //WorkManager-5
+        // Đăng ký observe để lắng nghe trạng thái và kết quả trả về từ 1 worker
         viewModel.outputWorkInfos.observe(this, workInfosObserver())
     }
 

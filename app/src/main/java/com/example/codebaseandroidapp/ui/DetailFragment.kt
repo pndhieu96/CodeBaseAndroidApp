@@ -130,6 +130,9 @@ class DetailFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true /* enabled by default */) {
                 override fun handleOnBackPressed() {
+//                  Navigation-6
+//                  NavController
+//                  Dùng navController.PopBackStack() để back về destination trước đó trong backStack
                     navController.popBackStack()
                 }
             }

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Navigation-2-->
+<!--Navigation graph-->
+
+<!--Chứa các Destination là bất kỳ địa điểm nào trong ứng dụng mà-->
+<!--người dùng có thể điều hướng tới, thường là một fragment hay activity-->
+
+<!--1 destination thường có các thuộc tính như android:name, android:id,-->
+<!--tools:layout và các thành phần như <action>, <argument>, <deepLink>-->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

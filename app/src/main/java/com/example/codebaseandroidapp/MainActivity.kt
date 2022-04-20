@@ -1,5 +1,6 @@
 package com.example.codebaseandroidapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
         for (i in 0 until binding.tabLayout.childCount) {
             binding.tabLayout.getChildAt(i).setPadding(10, 25, 10, 0)
         }
+
     }
 
     override fun onStart() {

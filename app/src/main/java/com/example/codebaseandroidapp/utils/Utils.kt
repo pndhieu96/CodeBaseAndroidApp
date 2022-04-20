@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.renderscript.Allocation
@@ -25,6 +26,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.navigation.NavDeepLinkBuilder
 import com.example.codebaseandroidapp.Application
 import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
@@ -167,6 +169,15 @@ class Utils {
             val notificationIntent = Intent(context, MainActivity::class.java)
             notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             val intent = PendingIntent.getActivity(context, 0, notificationIntent, 0)
+
+//            val args = Bundle()
+//            args.putStringf("myarg", "From Notification");
+//            val intent = NavDeepLinkBuilder(context)
+//                .setGraph(R.navigation.extenstion_navigation)
+//                .setDestination(R.id.serviceFragment)
+//                .setComponentName(MainActivity::class.java)
+//                .setArguments(args)
+//                .createPendingIntent()
 
             val contentView = RemoteViews(context.packageName, R.layout.notification_custom)
             contentView.setImageViewResource(R.id.image, R.drawable.song)
