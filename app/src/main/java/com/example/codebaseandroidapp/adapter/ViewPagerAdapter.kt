@@ -4,14 +4,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.codebaseandroidapp.di.MainActitvityModule
 import com.example.codebaseandroidapp.ui.ExtenstionRootFragment
 import com.example.codebaseandroidapp.ui.HomeRootFragment
 import com.example.codebaseandroidapp.ui.MyListRootFragment
 import com.example.codebaseandroidapp.ui.SearchRootFragment
+import javax.inject.Inject
 
-class ViewPagerAdapter(
-    val fragmentManager: FragmentManager,
-    lifecycle: Lifecycle
+class ViewPagerAdapter @Inject constructor(
+    @MainActitvityModule.MainActivityFragmentManager val fragmentManager: FragmentManager,
+    @MainActitvityModule.MainActivityLifeCycle val lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     var currentFragment: Fragment? = null
 

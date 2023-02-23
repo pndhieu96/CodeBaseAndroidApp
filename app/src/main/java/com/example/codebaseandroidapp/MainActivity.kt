@@ -12,37 +12,42 @@ import com.example.codebaseandroidapp.ui.SearchRootFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * Hilt-2
  * @AndroidEntryPoint:
- * Tạo một bộ chứa những dependencies cần thiết cho android class, tuân theo vòng đời của android class
+ * Hilt tạo một bộ chứa những dependencies cần thiết cho lớp android được chú thích, tuân theo vòng đời của nó
  * và cho phép inject những instances của những phụ thuộc đó vào lớp để sử dụng
  * Nó hỗ trợ cho những class thường dùng trong android như:
  * activity, fragment, view, service, broadcastReceiver
  *
  * Field injection:
- * Để lấy những instances cần thiết để sử dụng, ta chú thích @Inject trên field muốn được inject
+ * Để lấy những instances cần thiết ra sử dụng, ta chú thích @Inject trên field muốn được inject trong lớp
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStrategy {
 
     private lateinit var binding : ActivityMainBinding
-    private var viewPagerAdapter : ViewPagerAdapter? = null
+    private lateinit var tabLayoutMediator : TabLayoutMediator
+    @Inject
+    lateinit var viewPagerAdapter : ViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("LC-MainActivity", "onCreate")
         this.supportActionBar!!.hide()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+
         binding.viewPager.adapter = viewPagerAdapter
         binding.viewPager.isUserInputEnabled = false
-        var tabLayoutMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager, this)
+
+        tabLayoutMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager, this)
         tabLayoutMediator.attach()
+
         binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewPagerAdapter?.currentFragment?.let {
+                viewPagerAdapter.currentFragment?.let {
                     if(it is SearchRootFragment)
                         it.navToRootDestination()
                 }

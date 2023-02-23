@@ -16,7 +16,8 @@ import javax.inject.Inject
 class MovieRepository @Inject constructor(
     private val database: AppDatabase,
     private val netWorkService: NetWorkService,
-    @AppModule.IoDispatcher private val defaultDispatcher: CoroutineDispatcher
+    @AppModule.IoDispatcher
+    private val dispatcher: CoroutineDispatcher
 ) {
     val genres: LiveData<List<Genre>> = database.genreDao().getGenres()
 

@@ -14,16 +14,16 @@ import javax.inject.Inject
 /**
  * Hilt-3
  * @Inject constructor
- * Để chỉ cho hilt cách cung cấp instance của đối tượng
+ * Để chỉ cho hilt cách cung cấp đối tượng
  *
  * @HiltViewModel
- * Để chỉ cho hilt cách cung cấp instance của ViewModel
+ * Để chỉ cho hilt cách cung cấp đối tượng ViewModel
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     val movieRepository: MovieRepository
 ): ViewModel() {
-    //Một biến LiveData có thể thay đổi dữ liêu mà nó swap
+    //MutableLiveData là Một biến LiveData có thể thay đổi dữ liêu mà nó swap
     private val _genres = MutableLiveData<String>()
     val genres: LiveData<List<Genre>> = movieRepository.genres
 

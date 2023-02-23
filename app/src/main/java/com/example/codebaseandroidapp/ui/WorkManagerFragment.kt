@@ -20,6 +20,9 @@ import androidx.core.app.ActivityCompat
 
 import androidx.core.content.ContextCompat
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 
 @AndroidEntryPoint
 class WorkManagerFragment : Fragment() {
@@ -27,6 +30,7 @@ class WorkManagerFragment : Fragment() {
     private var binding : FragmentWorkManagerBinding? = null
     private val viewModel: WorkManagerViewModel by viewModels()
     private val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +46,7 @@ class WorkManagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWorkManagerBinding.inflate(inflater)
+        navController = NavHostFragment.findNavController(this)
         binding?.let {
             it.goButton.setOnClickListener { viewModel.applyBlur(blurLevel) }
             it.seeFileButton.setOnClickListener {
@@ -57,6 +62,18 @@ class WorkManagerFragment : Fragment() {
             }
         }
         return binding!!.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+                    navController.popBackStack()
+                }
+            }
+        )
     }
 
     override fun onDestroyView() {

@@ -21,7 +21,7 @@ import dagger.hilt.android.HiltAndroidApp
         * và những nơi cần sử dụng phụ thuộc chi cần gọi đến container object để lấy phụ thuôc tương ứng
  *
  * Hilt:
- * nó là một thư viện giúp dependency injection trong android giúp giảm bới thực hiện dependency injection
+ * nó là một thư viện giúp dependency injection trong android giúp giảm bớt thực hiện dependency injection
  * thủ công trong dự án
  *
  * Để bắt đầu sử dụng hilt ta phải config nó trong build.gradle

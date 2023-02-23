@@ -37,8 +37,6 @@ class HomeRootFragment : Fragment() {
     * thông qua Navigation Graph
     * */
 
-    private val viewModel: HomeRootViewModel by viewModels()
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d("LC-HomeRootFragment", "onAttach")

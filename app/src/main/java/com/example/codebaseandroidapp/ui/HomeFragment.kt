@@ -22,8 +22,6 @@ import com.example.codebaseandroidapp.adapter.MovieListen
 import com.example.codebaseandroidapp.databinding.FragmentHomeBinding
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.example.codebaseandroidapp.viewModel.HomeViewModel
-import com.example.codebaseandroidapp.viewModel.HomeViewModelFactory
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -31,16 +29,21 @@ import javax.inject.Inject
 class homeFragment : Fragment() {
 
     private var binding: FragmentHomeBinding? = null
-    private lateinit var navController: NavController
+
+    //      Navigation-4
+    //      NavController
+    //      Dùng findNavController trong fragment là 1 destination trong navGraph để lấy được
+    //      instance của 1 navController
+    private val navController: NavController by lazy { findNavController(this) }
 
     @Inject
     lateinit var adapter: HomeParentRecycleViewAdapter
 
     //    cách khác để khởi tạo 1 viewmodel từ by viewModels
-//    private val viewModel: HomeViewModel by viewModels{
-//        HomeViewModelFactory((requireActivity().application as Application).repository)
-//    }
-//    inject instance cua viewmodel
+    //    private val viewModel: HomeViewModel by viewModels{
+    //        HomeViewModelFactory((requireActivity().application as Application).repository)
+    //    }
+    //    inject instance cua viewmodel voi hilt
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onAttach(context: Context) {
@@ -56,15 +59,9 @@ class homeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Log.d("LC-homeFragment", "onCreateView")
         binding = FragmentHomeBinding.inflate(inflater)
-
-//      Navigation-4
-//      NavController
-//      Dùng findNavController trong fragment là 1 destination trong navGraph để lấy được
-//      instance của 1 navController
-        navController = findNavController(this)
 
 //      cách khác để khởi tạo 1 viewmodel từ viewModelFactory
 //      viewModel = ViewModelProvider(this,

@@ -1,17 +1,13 @@
 package com.example.codebaseandroidapp.di
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.codebaseandroidapp.adapter.HomeChildLanscapeRecycleViewAdapter
-import com.example.codebaseandroidapp.adapter.HomeChildPortraitRecycleViewAdapter
-import com.example.codebaseandroidapp.adapter.MovieDiffCallback
-import com.example.codebaseandroidapp.adapter.MoviesWithGenreDiffCallback
+import com.example.codebaseandroidapp.adapter.*
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.example.codebaseandroidapp.utils.ConstantUtils.Companion.BASE_URL
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ActivityRetainedComponent
@@ -21,7 +17,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Qualifier
-import javax.inject.Singleton
 
 /**
  * Hilt-5
@@ -29,13 +24,19 @@ import javax.inject.Singleton
  * Để cung cấp các instance của các class mà không sử dụng được constructor-injected
  * như là interface, abstrack class hay những class không chứa trong project.
  *
+ *
  * Provides:
- * Để cung cấp cách khởi tạo cho những instance của các lass không nằm trong project
+ * Để cung cấp cách khởi tạo cho những lớp không nằm trong project
+ * như các thư viện
+ *
+ *
+ * ActivityRetainedComponent với scope @ActivityRentainedScope thì những object sẽ
+ * là singleton và sống qua "configuration change" của activity
  *
  */
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class ActitvityModule {
+class ActitvityRetainedModule {
 
     @Provides
     fun provideHttpLogingInterceptror(): HttpLoggingInterceptor {
@@ -72,7 +73,11 @@ class ActitvityModule {
  * Để cung cấp cách triển khai của những interface hay abstract class
  *
  * Qualifier:
- * Để cung cấp những cách khởi tạo những instances khác nhau cho cùng một kiểu
+ * Để cung cấp những cách khởi tạo khác nhau cho cùng một class
+ *
+ * ActivityComponent với scope @ActivityRentainedScope thì những object sẽ
+ * là singleton và bị destroy khi "configuration change" của activity
+ *
  */
 @Module
 @InstallIn(ActivityComponent::class)
