@@ -40,22 +40,12 @@ import com.example.codebaseandroidapp.utils.ConstantUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailFragment : Fragment() {
+class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
 
     private val viewModel :  DetailViewModel by viewModels()
-    private lateinit var navController: NavController
     private var id: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding = FragmentDetailBinding.inflate(inflater)
-        navController = findNavController(this)
+    override fun FragmentDetailBinding.initialize() {
         id = arguments?.getString("movieId")
         binding.button.setOnClickListener {
             navController.popBackStack()
@@ -118,8 +108,6 @@ class DetailFragment : Fragment() {
         id?.let {
             viewModel.getRelativeMovie("\"$it\"")
         }
-
-        return binding.root
     }
 
     override fun onResume() {
@@ -130,9 +118,11 @@ class DetailFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true /* enabled by default */) {
                 override fun handleOnBackPressed() {
-//                  Navigation-6
-//                  NavController
-//                  Dùng navController.PopBackStack() để back về destination trước đó trong backStack
+                    /**
+                     * Navigation-6
+                     * NavController
+                     * Dùng navController.PopBackStack() để back về destination trước đó trong backStack
+                     */
                     navController.popBackStack()
                 }
             }
@@ -141,9 +131,6 @@ class DetailFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            DetailFragment().apply {
-
-            }
+        fun newInstance() = DetailFragment()
     }
 }

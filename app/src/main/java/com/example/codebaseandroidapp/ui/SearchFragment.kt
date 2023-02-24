@@ -4,20 +4,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.codebaseandroidapp.MainActivity
@@ -35,11 +28,9 @@ import retrofit2.HttpException
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
-    private var binding: FragmentSearchBinding? = null
-    private lateinit var navController: NavController
-    @Inject
-    lateinit var adapter: SearchAdapter
+class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
+
+    @Inject lateinit var adapter: SearchAdapter
     private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,25 +43,21 @@ class SearchFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSearchBinding.inflate(inflater)
-        navController = findNavController(this)
-
+    override fun FragmentSearchBinding.initialize() {
         val layoutManager = GridLayoutManager(requireContext(), 2)
-        // Paging-3
-        // addLoadStateListener truyền vào 1 CombinedLoadStates: để lắng nghe trạng thái hiện tại của việc load dữ liệu như
-            // CombinedLoadStates.refresh: Đại diện cho trạng thái khi bắt đầu tải
-            // CombinedLoadStates.prepend: Đại diện cho trạng thái tải khi bắt đầu danh sách
-            // CombinedLoadStates.append: Đại diện cho trạng thái tải khi ở cuối danh sách
+        /**
+         * Paging-3
+         * addLoadStateListener truyền vào 1 CombinedLoadStates: để lắng nghe trạng thái hiện tại của việc load dữ liệu như
+         * CombinedLoadStates.refresh: Đại diện cho trạng thái khi bắt đầu tải
+         * CombinedLoadStates.prepend: Đại diện cho trạng thái tải khi bắt đầu danh sách
+         * CombinedLoadStates.append: Đại diện cho trạng thái tải khi ở cuối danh sách
+         */
         adapter.addLoadStateListener { loadState ->
             Log.d("SearchFragment", loadState.toString())
             if (loadState.refresh is LoadState.Loading) {
-                binding?.progressBar?.visibility = VISIBLE
+                binding.progressBar.visibility = VISIBLE
             } else {
-                binding?.progressBar?.visibility = View.GONE
+                binding.progressBar.visibility = GONE
 
                 // getting the error
                 val error = when {
@@ -81,15 +68,15 @@ class SearchFragment : Fragment() {
                 }
 
                 if(error?.error?.message.equals("-1")) {
-                    binding?.tvNotFound?.visibility = VISIBLE
-                    binding?.list?.visibility = GONE
+                    binding.tvNotFound.visibility = VISIBLE
+                    binding.list.visibility = GONE
                 } else {
-                    binding?.tvNotFound?.visibility = GONE
-                    binding?.list?.visibility = VISIBLE
+                    binding.tvNotFound.visibility = GONE
+                    binding.list.visibility = VISIBLE
                     error?.let {
                         if(!(it.error is HttpException && (it.error as HttpException).code() == 422)) {
                             Toast.makeText(
-                                binding?.root?.context,
+                                binding.root.context,
                                 it.error.message,
                                 Toast.LENGTH_LONG
                             ).show()
@@ -104,18 +91,18 @@ class SearchFragment : Fragment() {
             val bundle = bundleOf("movieId" to it.id.toString())
             navController.navigate(R.id.action_searchFragment_to_detailFragment4, bundle)
         })
-        binding?.list?.layoutManager = layoutManager
-        binding?.list?.adapter = adapter
+        binding.list.layoutManager = layoutManager
+        binding.list.adapter = adapter
 
-        binding?.ibtnClose?.setOnClickListener {
-            binding?.etSearch?.setText("")
+        binding.ibtnClose.setOnClickListener {
+            binding.etSearch.setText("")
         }
 
-        binding?.ibtnSearch?.setOnClickListener {
+        binding.ibtnSearch.setOnClickListener {
             focusEditText()
         }
 
-        binding?.etSearch?.addTextChangedListener(object: TextWatcher{
+        binding.etSearch.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -135,11 +122,6 @@ class SearchFragment : Fragment() {
                 }
             }
         })
-        return binding?.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onResume() {
@@ -160,16 +142,11 @@ class SearchFragment : Fragment() {
         )
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
-
     fun focusEditText() {
-        binding?.etSearch?.setText("")
-        binding?.etSearch?.postDelayed(Runnable {
-            binding?.etSearch?.requestFocus()
-            binding?.etSearch?.let {
+        binding.etSearch.setText("")
+        binding.etSearch.postDelayed({
+            binding.etSearch.requestFocus()
+            binding.etSearch.let {
                 showKeyBoard(requireActivity(), it)
             }
         }, 30)
@@ -177,9 +154,6 @@ class SearchFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            SearchFragment().apply {
-
-            }
+        fun newInstance() = SearchFragment()
     }
 }

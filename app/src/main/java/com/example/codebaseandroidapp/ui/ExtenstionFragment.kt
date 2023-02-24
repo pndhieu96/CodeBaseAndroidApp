@@ -13,30 +13,19 @@ import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.databinding.FragmentExtenstionBinding
 
-class ExtenstionFragment : Fragment() {
-    private var binding: FragmentExtenstionBinding? = null
-    private var navController: NavController? = null
-
+class ExtenstionFragment : BaseFragment<FragmentExtenstionBinding>(FragmentExtenstionBinding::inflate) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentExtenstionBinding.inflate(inflater)
-        navController = findNavController(this)
-
-        binding!!.btnService.setOnClickListener {
-            navController!!.navigate(R.id.action_extenstionFragment_to_serviceFragment)
+    override fun FragmentExtenstionBinding.initialize() {
+        binding.btnService.setOnClickListener {
+            navController.navigate(R.id.action_extenstionFragment_to_serviceFragment)
         }
-        binding!!.btnWorkManager.setOnClickListener {
-            navController!!.navigate(R.id.action_extenstionFragment_to_workManagerFragment)
+        binding.btnWorkManager.setOnClickListener {
+            navController.navigate(R.id.action_extenstionFragment_to_workManagerFragment)
         }
-
-        return binding!!.root
     }
 
     override fun onResume() {
@@ -56,9 +45,6 @@ class ExtenstionFragment : Fragment() {
 
     companion object {
        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ExtenstionFragment().apply {
-
-            }
+        fun newInstance() = ExtenstionFragment()
     }
 }

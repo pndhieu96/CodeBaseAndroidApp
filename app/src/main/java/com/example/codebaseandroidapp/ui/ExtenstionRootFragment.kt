@@ -9,26 +9,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.databinding.FragmentExtenstionBinding
+import com.example.codebaseandroidapp.databinding.FragmentExtenstionRootBinding
 
-class ExtenstionRootFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_extenstion_root, container, false)
-    }
+class ExtenstionRootFragment : BaseFragment<FragmentExtenstionRootBinding>(FragmentExtenstionRootBinding::inflate) {
 
     companion object {
 
         @JvmStatic
-        fun newInstance() =
-            ExtenstionRootFragment().apply {
-
-            }
+        fun newInstance() = ExtenstionRootFragment()
     }
 }

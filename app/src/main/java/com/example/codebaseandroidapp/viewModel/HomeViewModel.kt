@@ -6,7 +6,9 @@ import com.example.codebaseandroidapp.model.Genre
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.example.codebaseandroidapp.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.lang.Exception
 import javax.inject.Inject
@@ -40,7 +42,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getGenres() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("HomeViewModel", Thread.currentThread().name)
             try {
                 val mMoviesWithGenre : MutableList<MoviesWithGenre> = mutableListOf()
                 val genres = movieRepository.fetchGenres()
@@ -51,18 +54,21 @@ class HomeViewModel @Inject constructor(
                         mMoviesWithGenre.add(moviesWithGenre)
                     }
                     if(index == 3) {
-                        _moviesWithGenre.value = mMoviesWithGenre
+                        withContext(Dispatchers.Main) {
+                            _moviesWithGenre.value = mMoviesWithGenre
+                        }
                     }
                 }
-                _moviesWithGenre.value = mMoviesWithGenre
+                withContext(Dispatchers.Main) {
+                    _moviesWithGenre.value = mMoviesWithGenre
+                }
             } catch (e: HttpException) {
+                Log.d("HomeViewModel", Thread.currentThread().name)
                 Log.d("HomeViewModel", e.message.toString())
-                _error.value = e
-                clearError()
-            } catch (e: Exception) {
-                Log.d("HomeViewModel", e.message.toString())
-                _error.value = e
-                clearError()
+                withContext(Dispatchers.Main) {
+                    _error.value = e
+                    clearError()
+                }
             }
         }
     }

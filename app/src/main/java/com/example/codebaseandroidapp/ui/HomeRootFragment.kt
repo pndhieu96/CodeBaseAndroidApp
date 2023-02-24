@@ -14,12 +14,13 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
+import com.example.codebaseandroidapp.databinding.FragmentHomeRootBinding
 import com.example.codebaseandroidapp.viewModel.HomeRootViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeRootFragment : Fragment() {
+class HomeRootFragment : BaseFragment<FragmentHomeRootBinding>(FragmentHomeRootBinding::inflate) {
 
     /*
     * Navigation-1
@@ -47,12 +48,8 @@ class HomeRootFragment : Fragment() {
         Log.d("LC-HomeRootFragment", "onCreate")
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun FragmentHomeRootBinding.initialize() {
         Log.d("LC-HomeRootFragment", "onCreateView")
-        return inflater.inflate(R.layout.fragment_home_root, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,9 +94,6 @@ class HomeRootFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            HomeRootFragment().apply {
-
-            }
+        fun newInstance() = HomeRootFragment()
     }
 }

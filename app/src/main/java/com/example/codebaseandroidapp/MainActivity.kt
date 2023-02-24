@@ -47,16 +47,14 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
 
         binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewPagerAdapter.currentFragment?.let {
-                    if(it is SearchRootFragment)
-                        it.navToRootDestination()
-                }
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
+
             }
         })
         for (i in 0 until binding.tabLayout.childCount) {

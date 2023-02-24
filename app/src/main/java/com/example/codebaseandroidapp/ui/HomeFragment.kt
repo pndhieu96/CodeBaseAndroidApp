@@ -3,17 +3,13 @@ package com.example.codebaseandroidapp.ui
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
@@ -26,24 +22,26 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class homeFragment : Fragment() {
+class homeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    private var binding: FragmentHomeBinding? = null
+    /**
+     * Navigation-4
+     * NavController
+     * Dùng findNavController trong fragment mà fragment đó là 1 destination trong navGraph để lấy được
+     * instance của 1 navController
+     */
+    @Inject lateinit var adapter: HomeParentRecycleViewAdapter
 
-    //      Navigation-4
-    //      NavController
-    //      Dùng findNavController trong fragment là 1 destination trong navGraph để lấy được
-    //      instance của 1 navController
-    private val navController: NavController by lazy { findNavController(this) }
+    /**
+     * cách khác để khởi tạo 1 viewmodel từ by viewModels
+     * private val viewModel: HomeViewModel by viewModels{
+     *     HomeViewModelFactory((requireActivity().application as Application).repository)
+     * }
+     */
 
-    @Inject
-    lateinit var adapter: HomeParentRecycleViewAdapter
-
-    //    cách khác để khởi tạo 1 viewmodel từ by viewModels
-    //    private val viewModel: HomeViewModel by viewModels{
-    //        HomeViewModelFactory((requireActivity().application as Application).repository)
-    //    }
-    //    inject instance cua viewmodel voi hilt
+    /**
+     * inject instance của viewmodel với hilt
+     */
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onAttach(context: Context) {
@@ -56,27 +54,23 @@ class homeFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun FragmentHomeBinding.initialize() {
         Log.d("LC-homeFragment", "onCreateView")
-        binding = FragmentHomeBinding.inflate(inflater)
 
-//      cách khác để khởi tạo 1 viewmodel từ viewModelFactory
-//      viewModel = ViewModelProvider(this,
-//          HomeViewModelFactory((requireActivity().application as Application).repository)
-//      ).get(HomeViewModel::class.java)
-
-        binding!!.recycleViewParent.adapter = adapter
-        binding!!.recycleViewParent.layoutManager = LinearLayoutManager(activity)
+        binding.recycleViewParent.adapter = adapter
+        binding.recycleViewParent.layoutManager = LinearLayoutManager(activity)
         showLoadding()
         adapter.setCallBack(MovieListen {
-//          Navigation-5
-//          NavController
-//          Dùng navCOntroller.navigate để navigate từ destination hiện tại đến 1 destination khác
-//          trong navGraph và truyền vào action hoặc id của destination tương ứng kèm các arguments cần
-//          thiết dưới dạng 1 bundle
+             /**
+              * Navigation-5
+              * NavController
+              * Dùng navCOntroller.navigate để navigate từ destination hiện tại đến 1 destination khác
+              * trong navGraph và truyền vào action hoặc id của destination tương ứng kèm các arguments cần
+              * thiết dưới dạng 1 bundle
+              *
+              * Nếu navigate fragment 1 -> fragment 2, thì fragment 1 sẽ rơi vào trạng thái onStop
+              * Khi từ fragment 2 back lại thì fragment 1 sẽ bắt đầu từ trạng thái onCreateView
+             */
             val bundle = bundleOf("movieId" to it.id.toString())
             navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
         })
@@ -91,19 +85,11 @@ class homeFragment : Fragment() {
                 showError(it.message.toString())
             }
         }
-
-
-        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("LC-homeFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.d("LC-homeFragment", "onActivityCreated")
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onStart() {
@@ -147,7 +133,6 @@ class homeFragment : Fragment() {
     override fun onDestroyView() {
         Log.d("LC-homeFragment", "onDestroyView")
         super.onDestroyView()
-        binding = null
     }
 
     override fun onDestroy() {
@@ -161,20 +146,20 @@ class homeFragment : Fragment() {
     }
 
     fun showError(text: String) {
-        binding!!.tvError.setText(text)
-        binding!!.progressBar.visibility = GONE
-        binding!!.tvError.visibility = VISIBLE
+        binding.tvError.setText(text)
+        binding.progressBar.visibility = GONE
+        binding.tvError.visibility = VISIBLE
     }
 
     fun showLoadding() {
-        binding!!.progressBar.visibility = VISIBLE
-        binding!!.tvError.visibility = GONE
+        binding.progressBar.visibility = VISIBLE
+        binding.tvError.visibility = GONE
     }
 
     fun showList(list: List<MoviesWithGenre>) {
         adapter.submitList(list)
-        binding!!.progressBar.visibility = GONE
-        binding!!.tvError.visibility = GONE
+        binding.progressBar.visibility = GONE
+        binding.tvError.visibility = GONE
     }
 
     companion object {

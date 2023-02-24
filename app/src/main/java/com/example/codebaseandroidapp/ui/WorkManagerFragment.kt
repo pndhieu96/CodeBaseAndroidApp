@@ -25,29 +25,21 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 
 @AndroidEntryPoint
-class WorkManagerFragment : Fragment() {
+class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWorkManagerBinding::inflate) {
 
-    private var binding : FragmentWorkManagerBinding? = null
     private val viewModel: WorkManagerViewModel by viewModels()
     private val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1
-    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestPermissions()
-
         //WorkManager-5
         // Đăng ký observe để lắng nghe trạng thái và kết quả trả về từ 1 worker
         viewModel.outputWorkInfos.observe(this, workInfosObserver())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentWorkManagerBinding.inflate(inflater)
-        navController = NavHostFragment.findNavController(this)
-        binding?.let {
+    override fun FragmentWorkManagerBinding.initialize() {
+        requestPermissions()
+        binding.let {
             it.goButton.setOnClickListener { viewModel.applyBlur(blurLevel) }
             it.seeFileButton.setOnClickListener {
                 viewModel.outputUri?.let { currentUri ->
@@ -61,7 +53,6 @@ class WorkManagerFragment : Fragment() {
                 viewModel.cancelWork()
             }
         }
-        return binding!!.root
     }
 
     override fun onResume() {
@@ -78,12 +69,11 @@ class WorkManagerFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
     }
 
     private fun showWorkInProgress() {
         //Dùng with để gán dữ liệu cho các thuôc tính của 1 đối tượng
-        binding?.let {
+        binding.let {
             it.progressBar.visibility = View.VISIBLE
             it.cancelButton.visibility = View.VISIBLE
             it.goButton.visibility = View.GONE
@@ -92,7 +82,7 @@ class WorkManagerFragment : Fragment() {
     }
 
     private fun showWorkFinished() {
-        binding?.let {
+        binding.let {
             it.progressBar.visibility = View.GONE
             it.cancelButton.visibility = View.GONE
             it.goButton.visibility = View.VISIBLE
@@ -124,7 +114,7 @@ class WorkManagerFragment : Fragment() {
                 // If there is an output file show "See File" button
                 if (!outputImageUri.isNullOrEmpty()) {
                     viewModel.setOutputUri(outputImageUri)
-                    binding?.seeFileButton?.visibility = View.VISIBLE
+                    binding.seeFileButton?.visibility = View.VISIBLE
                 }
             } else {
                 showWorkInProgress()
@@ -139,7 +129,7 @@ class WorkManagerFragment : Fragment() {
             )
             != PackageManager.PERMISSION_GRANTED
         ) {
-            binding?.goButton?.visibility = View.GONE
+            binding.goButton.visibility = View.GONE
             ActivityCompat.requestPermissions(
                 requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
@@ -150,7 +140,7 @@ class WorkManagerFragment : Fragment() {
     }
 
     private fun readFile() {
-        binding?.goButton?.visibility = View.VISIBLE
+        binding.goButton.visibility = View.VISIBLE
     }
 
     override fun onRequestPermissionsResult(
@@ -181,7 +171,7 @@ class WorkManagerFragment : Fragment() {
 
     private val blurLevel: Int
         get() =
-            when (binding?.radioBlurGroup?.checkedRadioButtonId) {
+            when (binding.radioBlurGroup.checkedRadioButtonId) {
                 R.id.radio_blur_lv_1 -> 1
                 R.id.radio_blur_lv_2 -> 2
                 R.id.radio_blur_lv_3 -> 3

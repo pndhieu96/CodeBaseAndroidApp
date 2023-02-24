@@ -4,21 +4,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.opengl.Visibility
-import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.codebaseandroidapp.Application
 import com.example.codebaseandroidapp.databinding.FragmentServiceBinding
 import com.example.codebaseandroidapp.service.DownloadIntentService
@@ -26,34 +19,17 @@ import com.example.codebaseandroidapp.service.SongService
 import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils
 import android.content.ComponentName
-
 import android.os.IBinder
-
 import android.content.ServiceConnection
-import androidx.room.Delete
 import com.example.codebaseandroidapp.service.DeleteBoundService
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
+class ServiceFragment : BaseFragment<FragmentServiceBinding>(FragmentServiceBinding::inflate) {
 
-class ServiceFragment : Fragment() {
-
-    private var binding: FragmentServiceBinding? = null
-    private var navController: NavController? = null
     private var mBound = false
     private var mService : DeleteBoundService? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentServiceBinding.inflate(inflater)
-        navController = findNavController(this)
-        return binding!!.root
-    }
 
     override fun onStart() {
         super.onStart()
@@ -65,48 +41,46 @@ class ServiceFragment : Fragment() {
         val intent = Intent(activity, DeleteBoundService::class.java)
         activity?.bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
 
-        binding?.let { binding ->
-            binding.btnDownload.setOnClickListener {
-                context?.let {
-                    if(binding.progressBar.visibility != VISIBLE) {
-                        binding.progressBar.visibility = VISIBLE
-                        DownloadIntentService.startActionDownload(it, ConstantUtils.SONG_URL)
-                        stopPlaying()
-                    }
+        binding.btnDownload.setOnClickListener {
+            context?.let {
+                if(binding.progressBar.visibility != VISIBLE) {
+                    binding.progressBar.visibility = VISIBLE
+                    DownloadIntentService.startActionDownload(it, ConstantUtils.SONG_URL)
+                    stopPlaying()
                 }
             }
-            binding.btnDelete.setOnClickListener {
-                context?.let {
-                    if(binding.progressBar.visibility != VISIBLE && mBound) {
-                        binding.progressBar.visibility = VISIBLE
+        }
+        binding.btnDelete.setOnClickListener {
+            context?.let {
+                if(binding.progressBar.visibility != VISIBLE && mBound) {
+                    binding.progressBar.visibility = VISIBLE
 //                        Delete file with Intent Service
 //                        DownloadIntentService.startActionDelete(it, ConstantUtils.SONG_URL)
 
-                        if(mService?.handleActionDelete(ConstantUtils.SONG_URL) ?: false) {
-                            if (Utils.songFile().exists()) {
-                                enablePlayButton()
-                            } else {
-                                disableMediaButtons()
-                            }
+                    if(mService?.handleActionDelete(ConstantUtils.SONG_URL) ?: false) {
+                        if (Utils.songFile().exists()) {
+                            enablePlayButton()
+                        } else {
+                            disableMediaButtons()
                         }
-                        stopPlaying()
-                        binding.progressBar.visibility = GONE
                     }
+                    stopPlaying()
+                    binding.progressBar.visibility = GONE
                 }
             }
-            binding.btnPlay.setOnClickListener {
-                context?.let {
+        }
+        binding.btnPlay.setOnClickListener {
+            context?.let {
 
-                    //Start a foreground service
-                    val intent = Intent(it, SongService::class.java)
-                    intent.setAction(SongService.ACTION_CREATE)
-                    ContextCompat.startForegroundService(it, intent)
-                }
+                //Start a foreground service
+                val intent = Intent(it, SongService::class.java)
+                intent.action = SongService.ACTION_CREATE
+                ContextCompat.startForegroundService(it, intent)
             }
-            binding.btnStop.setOnClickListener {
-                stopPlaying()
-                enablePlayButton()
-            }
+        }
+        binding.btnStop.setOnClickListener {
+            stopPlaying()
+            enablePlayButton()
         }
     }
 
@@ -124,7 +98,7 @@ class ServiceFragment : Fragment() {
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(this,
-            object : OnBackPressedCallback(true /* enabled by default */) {
+            object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     navController?.popBackStack()
                 }
@@ -137,15 +111,6 @@ class ServiceFragment : Fragment() {
         LocalBroadcastManager.getInstance(Application.getAppContext())
             .unregisterReceiver(receiver)
         activity?.unbindService(mConnection)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 
     companion object {
@@ -170,14 +135,14 @@ class ServiceFragment : Fragment() {
                 }
             }
 
-            if(intent == null || intent!!.getStringExtra("ACTION").isNullOrEmpty()) {
+            if(intent?.getStringExtra("ACTION").isNullOrEmpty()) {
                 val param = intent?.getStringExtra(DownloadIntentService.DOWNLOAD_COMPLETE_KEY)
                 Log.i("ServiceFragment", "Receiver broadcast for $param")
                 if (Utils.songFile().exists()) {
                     enablePlayButton()
                 }
             }
-            binding?.progressBar?.visibility = GONE
+            binding.progressBar.visibility = GONE
         }
     }
 
@@ -196,13 +161,11 @@ class ServiceFragment : Fragment() {
     }
 
     private fun stopPlaying() {
-        activity?.let {
-            it.stopService(Intent(context, SongService::class.java))
-        }
+        activity?.stopService(Intent(context, SongService::class.java))
     }
 
     private fun enablePlayButton() {
-        binding?.let {
+        binding.let {
             enableButton(true, it.btnPlay)
             enableButton(false, it.btnStop)
             enableButton(false, it.btnDownload)
@@ -211,7 +174,7 @@ class ServiceFragment : Fragment() {
     }
 
     private fun enableStopButton() {
-        binding?.let {
+        binding.let {
             enableButton(false, it.btnPlay)
             enableButton(true, it.btnStop)
             enableButton(false, it.btnDownload)
@@ -220,7 +183,7 @@ class ServiceFragment : Fragment() {
     }
 
     private fun disableMediaButtons() {
-        binding?.let {
+        binding.let {
             enableButton(false, it.btnPlay)
             enableButton(false, it.btnStop)
             enableButton(true, it.btnDownload)
