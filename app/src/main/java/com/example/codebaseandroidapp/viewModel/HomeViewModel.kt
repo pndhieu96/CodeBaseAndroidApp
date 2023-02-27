@@ -42,8 +42,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getGenres() {
-        viewModelScope.launch(Dispatchers.IO) {
-            Log.d("HomeViewModel", Thread.currentThread().name)
+        viewModelScope.launch {
             try {
                 val mMoviesWithGenre : MutableList<MoviesWithGenre> = mutableListOf()
                 val genres = movieRepository.fetchGenres()
@@ -54,21 +53,14 @@ class HomeViewModel @Inject constructor(
                         mMoviesWithGenre.add(moviesWithGenre)
                     }
                     if(index == 3) {
-                        withContext(Dispatchers.Main) {
-                            _moviesWithGenre.value = mMoviesWithGenre
-                        }
+                        _moviesWithGenre.value = mMoviesWithGenre
                     }
                 }
-                withContext(Dispatchers.Main) {
-                    _moviesWithGenre.value = mMoviesWithGenre
-                }
+                _moviesWithGenre.value = mMoviesWithGenre
             } catch (e: HttpException) {
-                Log.d("HomeViewModel", Thread.currentThread().name)
                 Log.d("HomeViewModel", e.message.toString())
-                withContext(Dispatchers.Main) {
-                    _error.value = e
-                    clearError()
-                }
+                _error.value = e
+                clearError()
             }
         }
     }

@@ -17,6 +17,7 @@ import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.adapter.MovieListen
 import com.example.codebaseandroidapp.adapter.SearchAdapter
+import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentSearchBinding
 import com.example.codebaseandroidapp.utils.Utils
 import com.example.codebaseandroidapp.utils.Utils.Companion.showKeyBoard
@@ -43,7 +44,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         }
     }
 
-    override fun FragmentSearchBinding.initialize() {
+    override fun initObserve() {
+
+    }
+
+    override fun initialize() {
         val layoutManager = GridLayoutManager(requireContext(), 2)
         /**
          * Paging-3

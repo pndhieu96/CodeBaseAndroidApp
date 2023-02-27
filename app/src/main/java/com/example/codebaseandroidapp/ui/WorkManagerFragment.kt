@@ -4,10 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.work.WorkInfo
@@ -21,8 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import com.example.codebaseandroidapp.base.BaseFragment
 
 @AndroidEntryPoint
 class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWorkManagerBinding::inflate) {
@@ -37,7 +33,10 @@ class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWor
         viewModel.outputWorkInfos.observe(this, workInfosObserver())
     }
 
-    override fun FragmentWorkManagerBinding.initialize() {
+    override fun initObserve() {
+    }
+
+    override fun initialize() {
         requestPermissions()
         binding.let {
             it.goButton.setOnClickListener { viewModel.applyBlur(blurLevel) }

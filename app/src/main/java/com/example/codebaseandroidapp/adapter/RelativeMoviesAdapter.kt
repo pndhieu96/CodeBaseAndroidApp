@@ -10,8 +10,9 @@ import com.example.codebaseandroidapp.databinding.RecycleviewItemRelativeMoviesB
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils
+import javax.inject.Inject
 
-class RelativeMoviesAdapter : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
+class RelativeMoviesAdapter @Inject constructor() : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
     private var callBack: MovieListen? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

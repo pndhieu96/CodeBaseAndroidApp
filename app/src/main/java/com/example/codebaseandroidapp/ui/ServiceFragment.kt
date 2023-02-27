@@ -11,7 +11,6 @@ import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.NavController
 import com.example.codebaseandroidapp.Application
 import com.example.codebaseandroidapp.databinding.FragmentServiceBinding
 import com.example.codebaseandroidapp.service.DownloadIntentService
@@ -21,15 +20,21 @@ import com.example.codebaseandroidapp.utils.Utils
 import android.content.ComponentName
 import android.os.IBinder
 import android.content.ServiceConnection
+import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.service.DeleteBoundService
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ServiceFragment : BaseFragment<FragmentServiceBinding>(FragmentServiceBinding::inflate) {
 
     private var mBound = false
     private var mService : DeleteBoundService? = null
+
+    override fun initObserve() {
+    }
+
+    override fun initialize() {
+    }
 
     override fun onStart() {
         super.onStart()

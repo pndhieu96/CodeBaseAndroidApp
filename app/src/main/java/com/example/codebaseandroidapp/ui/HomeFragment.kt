@@ -9,12 +9,12 @@ import android.view.View.VISIBLE
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.adapter.HomeParentRecycleViewAdapter
 import com.example.codebaseandroidapp.adapter.MovieListen
+import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentHomeBinding
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.example.codebaseandroidapp.viewModel.HomeViewModel
@@ -54,27 +54,7 @@ class homeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         super.onCreate(savedInstanceState)
     }
 
-    override fun FragmentHomeBinding.initialize() {
-        Log.d("LC-homeFragment", "onCreateView")
-
-        binding.recycleViewParent.adapter = adapter
-        binding.recycleViewParent.layoutManager = LinearLayoutManager(activity)
-        showLoadding()
-        adapter.setCallBack(MovieListen {
-             /**
-              * Navigation-5
-              * NavController
-              * Dùng navCOntroller.navigate để navigate từ destination hiện tại đến 1 destination khác
-              * trong navGraph và truyền vào action hoặc id của destination tương ứng kèm các arguments cần
-              * thiết dưới dạng 1 bundle
-              *
-              * Nếu navigate fragment 1 -> fragment 2, thì fragment 1 sẽ rơi vào trạng thái onStop
-              * Khi từ fragment 2 back lại thì fragment 1 sẽ bắt đầu từ trạng thái onCreateView
-             */
-            val bundle = bundleOf("movieId" to it.id.toString())
-            navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
-        })
-
+    override fun initObserve() {
         viewModel.moviesWithGenre.observe(viewLifecycleOwner) {
             it?.let {
                 showList(it)
@@ -85,6 +65,26 @@ class homeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 showError(it.message.toString())
             }
         }
+    }
+
+    override fun initialize() {
+        binding.recycleViewParent.adapter = adapter
+        binding.recycleViewParent.layoutManager = LinearLayoutManager(activity)
+        showLoadding()
+        adapter.setCallBack(MovieListen {
+            /**
+             * Navigation-5
+             * NavController
+             * Dùng navCOntroller.navigate để navigate từ destination hiện tại đến 1 destination khác
+             * trong navGraph và truyền vào action hoặc id của destination tương ứng kèm các arguments cần
+             * thiết dưới dạng 1 bundle
+             *
+             * Nếu navigate fragment 1 -> fragment 2, thì fragment 1 sẽ rơi vào trạng thái onStop
+             * Khi từ fragment 2 back lại thì fragment 1 sẽ bắt đầu từ trạng thái onCreateView
+             */
+            val bundle = bundleOf("movieId" to it.id.toString())
+            navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,51 +1,54 @@
 package com.example.codebaseandroidapp.ui
 
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
-import com.example.codebaseandroidapp.Application
 import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.databinding.FragmentDetailBinding
 import com.example.codebaseandroidapp.utils.Utils
 import com.example.codebaseandroidapp.viewModel.DetailViewModel
-import com.example.codebaseandroidapp.viewModel.DetailViewModelFactory
 import android.graphics.PorterDuffColorFilter
-import android.widget.LinearLayout.HORIZONTAL
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.adapter.MovieListen
 import com.example.codebaseandroidapp.adapter.RelativeMoviesAdapter
+import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.model.LoveMovieId
 import com.example.codebaseandroidapp.utils.ConstantUtils
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
 
     private val viewModel :  DetailViewModel by viewModels()
     private var id: String? = null
+    @Inject lateinit var adapter: RelativeMoviesAdapter
 
-    override fun FragmentDetailBinding.initialize() {
+    override fun initObserve() {
+        viewModel.detailInfo.observe(viewLifecycleOwner) {
+            binding.tvTitle.text = it.title
+            binding.tvDes.text = it.overview
+            binding.tvSubTitle.text =
+                it.release_date + "  " + it.vote_average + "  " + it.original_language
+            Glide.with(requireContext())
+                .load(Utils.getImagePath(it.backdrop_path, ConstantUtils.FILE_SIZE_LANDSCAPE))
+                .into(binding.ivBgTop)
+            if(it.is_love) {
+                binding.btnLove.text = "Remove from my list"
+            } else {
+                binding.btnLove.text = "Love it"
+            }
+        }
+
+        viewModel.relativeMovies.observe(viewLifecycleOwner) {
+            adapter.submitList(it.results)
+        }
+    }
+
+    override fun initialize() {
         id = arguments?.getString("movieId")
         binding.button.setOnClickListener {
             navController.popBackStack()
@@ -72,38 +75,12 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             }
         }
 
-        val adapter = RelativeMoviesAdapter()
         adapter.setCallBack(MovieListen{
             val bundle = bundleOf("movieId" to it.id.toString())
             navController.navigate(R.id.action_detailFragment_self, bundle)
         })
         binding.rvRelativeMovies.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
         binding.rvRelativeMovies.adapter = adapter
-
-        viewModel.detailInfo.observe(viewLifecycleOwner) {
-            binding.tvTitle.text = it.title
-            binding.tvDes.text = it.overview
-            binding.tvSubTitle.text =
-                it.release_date + "  " + it.vote_average + "  " + it.original_language
-            Glide.with(requireContext())
-                .load(Utils.getImagePath(it.backdrop_path, ConstantUtils.FILE_SIZE_LANDSCAPE)).into(object : SimpleTarget<Drawable>() {
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable>?
-                    ) {
-                        binding.clTop.background = resource
-                    }
-                })
-            if(it.is_love) {
-                binding.btnLove.text = "Remove from my list"
-            } else {
-                binding.btnLove.text = "Love it"
-            }
-        }
-
-        viewModel.relativeMovies.observe(viewLifecycleOwner) {
-            adapter.submitList(it.results)
-        }
 
         id?.let {
             viewModel.getRelativeMovie("\"$it\"")
