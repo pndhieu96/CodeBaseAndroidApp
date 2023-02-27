@@ -2,7 +2,6 @@ package com.example.codebaseandroidapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -32,11 +31,11 @@ class MyListAdapter @Inject constructor():
         private var callBack: MovieListen? = null
 
         fun bind(item: Movie) {
-            item?.let {
+            item.let {
                 Glide.with(binding.root.context)
-                    .load(Utils.getImagePath(it.poster_path ?: "", ConstantUtils.FILE_SIZE_PORTRAIT))
+                    .load(Utils.getImagePath(it.poster_path, ConstantUtils.FILE_SIZE_PORTRAIT))
                     .into(binding.ivMovie)
-                binding.cardView.setOnClickListener { view ->
+                binding.cardView.setOnClickListener { _ ->
                     callBack?.onCLick(it)
                 }
             }

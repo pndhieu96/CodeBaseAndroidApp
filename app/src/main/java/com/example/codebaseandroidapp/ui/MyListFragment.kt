@@ -1,6 +1,5 @@
 package com.example.codebaseandroidapp.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -59,7 +58,7 @@ class MyListFragment : BaseFragment<FragmentMyListBinding>(FragmentMyListBinding
             }
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 Log.d("MyListAdapter", "onItemRangeInserted")
-                (binding?.recycleView.layoutManager as GridLayoutManager).scrollToPosition(0)
+                (binding.recycleView.layoutManager as GridLayoutManager).scrollToPosition(0)
             }
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
                 Log.d("MyListAdapter", "onItemRangeChanged")

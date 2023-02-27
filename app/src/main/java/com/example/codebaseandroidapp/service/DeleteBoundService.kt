@@ -45,7 +45,7 @@ class DeleteBoundService : Service() {
         super.onDestroy()
     }
 
-    public fun handleActionDelete(param: String) : Boolean {
+    fun handleActionDelete(param: String) : Boolean {
         Log.i("DeleteBoundService", "Starting delete for $param")
         Utils.delete(Utils.songDirectory())
         Log.i("DeleteBoundService", "Ending delete for $param")

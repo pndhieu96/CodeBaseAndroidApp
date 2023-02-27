@@ -1,6 +1,7 @@
 package com.example.codebaseandroidapp.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -12,7 +13,6 @@ import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.databinding.FragmentWorkManagerBinding
 import com.example.codebaseandroidapp.utils.ConstantUtils.Companion.KEY_IMAGE_URI
 import com.example.codebaseandroidapp.viewModel.WorkManagerViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.app.ActivityCompat
 
 import androidx.core.content.ContextCompat
@@ -20,7 +20,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import com.example.codebaseandroidapp.base.BaseFragment
 
-@AndroidEntryPoint
 class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWorkManagerBinding::inflate) {
 
     private val viewModel: WorkManagerViewModel by viewModels()
@@ -36,6 +35,7 @@ class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWor
     override fun initObserve() {
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     override fun initialize() {
         requestPermissions()
         binding.let {
@@ -64,10 +64,6 @@ class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWor
                 }
             }
         )
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 
     private fun showWorkInProgress() {
@@ -113,7 +109,7 @@ class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWor
                 // If there is an output file show "See File" button
                 if (!outputImageUri.isNullOrEmpty()) {
                     viewModel.setOutputUri(outputImageUri)
-                    binding.seeFileButton?.visibility = View.VISIBLE
+                    binding.seeFileButton.visibility = View.VISIBLE
                 }
             } else {
                 showWorkInProgress()
@@ -142,6 +138,8 @@ class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWor
         binding.goButton.visibility = View.VISIBLE
     }
 
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -149,23 +147,20 @@ class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWor
     ) {
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                readFile();
+                readFile()
             } else {
                 // Permission Denied
-                Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
             }
-            return;
+            return
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WorkManagerFragment().apply {
-
-            }
+        fun newInstance() = WorkManagerFragment()
     }
 
     private val blurLevel: Int

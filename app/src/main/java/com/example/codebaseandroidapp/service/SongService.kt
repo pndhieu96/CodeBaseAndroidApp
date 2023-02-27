@@ -86,7 +86,7 @@ class SongService : Service() {
     }
 
     override fun onDestroy() {
-        player?.stopMusic()
+        player.stopMusic()
         Application.isPlayingSong = false
         super.onDestroy()
     }

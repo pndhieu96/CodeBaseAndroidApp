@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeChildBinding
-import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeChildLanscapeBinding
 import com.example.codebaseandroidapp.di.ActitvityAbstractModule
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.utils.ConstantUtils
@@ -54,11 +53,9 @@ class HomeChildPortraitRecycleViewAdapter
 
     class PortraitViewHolder private constructor(val binding: RecycleviewItemHomeChildBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(movie: Movie) {
-            movie?.let {
-                Glide.with(binding.root.context)
-                    .load(getImagePath(movie.poster_path ?: "",ConstantUtils.FILE_SIZE_PORTRAIT))
-                    .into(binding.ivMovie)
-            }
+            Glide.with(binding.root.context)
+                .load(getImagePath(movie.poster_path ,ConstantUtils.FILE_SIZE_PORTRAIT))
+                .into(binding.ivMovie)
         }
 
         fun getCardView(): CardView {

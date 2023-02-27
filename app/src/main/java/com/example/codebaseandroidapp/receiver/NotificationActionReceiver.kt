@@ -16,20 +16,22 @@ import com.example.codebaseandroidapp.utils.Utils
 class NotificationActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         intent?.getStringExtra("ACTION")?.let {
-            Log.i("ActionReceiver", "onReceive: " + intent?.getStringExtra("ACTION"))
+            Log.i("ActionReceiver", "onReceive: " + intent.getStringExtra("ACTION"))
             when(it) {
                 SongService.ACTION_PLAY -> {
                     context?.let {
-                        val intent = Intent(it, SongService::class.java)
-                        intent.setAction(SongService.ACTION_PLAY)
-                        ContextCompat.startForegroundService(it, intent)
+                        Intent(it, SongService::class.java).apply {
+                            this.setAction(SongService.ACTION_PLAY)
+                            ContextCompat.startForegroundService(it, intent)
+                        }
                     }
                 }
                 SongService.ACTION_PAUSE -> {
                     context?.let {
-                        val intent = Intent(it, SongService::class.java)
-                        intent.setAction(SongService.ACTION_PAUSE)
-                        ContextCompat.startForegroundService(it, intent)
+                        Intent(it, SongService::class.java).apply {
+                            intent.setAction(SongService.ACTION_PAUSE)
+                            ContextCompat.startForegroundService(it, intent)
+                        }
                     }
                 }
                 else -> {

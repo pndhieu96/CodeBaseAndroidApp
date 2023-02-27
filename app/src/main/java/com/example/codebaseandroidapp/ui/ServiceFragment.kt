@@ -61,8 +61,7 @@ class ServiceFragment : BaseFragment<FragmentServiceBinding>(FragmentServiceBind
                     binding.progressBar.visibility = VISIBLE
 //                        Delete file with Intent Service
 //                        DownloadIntentService.startActionDelete(it, ConstantUtils.SONG_URL)
-
-                    if(mService?.handleActionDelete(ConstantUtils.SONG_URL) ?: false) {
+                    if(mService?.handleActionDelete(ConstantUtils.SONG_URL) == true) {
                         if (Utils.songFile().exists()) {
                             enablePlayButton()
                         } else {
@@ -78,9 +77,10 @@ class ServiceFragment : BaseFragment<FragmentServiceBinding>(FragmentServiceBind
             context?.let {
 
                 //Start a foreground service
-                val intent = Intent(it, SongService::class.java)
-                intent.action = SongService.ACTION_CREATE
-                ContextCompat.startForegroundService(it, intent)
+                Intent(it, SongService::class.java).apply {
+                    this.action = SongService.ACTION_CREATE
+                    ContextCompat.startForegroundService(it, intent)
+                }
             }
         }
         binding.btnStop.setOnClickListener {
@@ -105,7 +105,7 @@ class ServiceFragment : BaseFragment<FragmentServiceBinding>(FragmentServiceBind
         requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    navController?.popBackStack()
+                    navController.popBackStack()
                 }
             }
         )

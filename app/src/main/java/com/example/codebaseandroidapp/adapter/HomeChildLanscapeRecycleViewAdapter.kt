@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeChildBinding
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeChildLanscapeBinding
 import com.example.codebaseandroidapp.di.ActitvityAbstractModule
 import com.example.codebaseandroidapp.model.Movie
@@ -54,11 +53,9 @@ class HomeChildLanscapeRecycleViewAdapter
 
     class LanscapeViewHolder private constructor(val binding: RecycleviewItemHomeChildLanscapeBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(movie: Movie) {
-            movie?.let {
-                Glide.with(binding.root.context)
-                    .load(getImagePath(movie.backdrop_path ?: "",ConstantUtils.FILE_SIZE_LANDSCAPE))
-                    .into(binding.ivMovie)
-            }
+            Glide.with(binding.root.context)
+                .load(getImagePath(movie.backdrop_path,ConstantUtils.FILE_SIZE_LANDSCAPE))
+                .into(binding.ivMovie)
         }
 
         fun getCardView() : CardView {

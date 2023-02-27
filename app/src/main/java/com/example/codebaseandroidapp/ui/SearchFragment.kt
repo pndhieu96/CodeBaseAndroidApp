@@ -115,7 +115,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if(!viewModel.currentKey.equals(s.toString())) {
+                if(viewModel.currentKey != s.toString()) {
                     viewModel.searchMovies(s.toString())
                     lifecycleScope.launch {
                         // Paging-2
@@ -147,7 +147,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         )
     }
 
-    fun focusEditText() {
+    private fun focusEditText() {
         binding.etSearch.setText("")
         binding.etSearch.postDelayed({
             binding.etSearch.requestFocus()

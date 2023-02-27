@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.codebaseandroidapp.ui.homeFragment"
+        android:name="com.example.codebaseandroidapp.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action

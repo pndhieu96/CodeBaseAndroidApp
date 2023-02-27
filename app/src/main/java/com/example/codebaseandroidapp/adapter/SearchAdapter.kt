@@ -3,7 +3,6 @@ package com.example.codebaseandroidapp.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.codebaseandroidapp.databinding.RecycleviewItemSearchBinding
@@ -11,7 +10,6 @@ import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class SearchAdapter @Inject constructor():
     PagingDataAdapter<Movie, SearchAdapter.ViewHolder>(MovieDiffCallback()) {
@@ -38,11 +36,11 @@ class SearchAdapter @Inject constructor():
         private var callBack: MovieListen? = null
 
         fun bind(item: Movie) {
-            item?.let {
+            item.let {
                 Glide.with(binding.root.context)
-                    .load(Utils.getImagePath(it.poster_path ?: "", ConstantUtils.FILE_SIZE_PORTRAIT))
+                    .load(Utils.getImagePath(it.poster_path, ConstantUtils.FILE_SIZE_PORTRAIT))
                     .into(binding.ivMovie)
-                binding.cardView.setOnClickListener { view ->
+                binding.cardView.setOnClickListener { _ ->
                     callBack?.onCLick(it)
                 }
             }

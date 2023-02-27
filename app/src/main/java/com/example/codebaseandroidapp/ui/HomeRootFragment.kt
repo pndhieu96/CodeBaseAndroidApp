@@ -8,7 +8,6 @@ import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentHomeRootBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class HomeRootFragment : BaseFragment<FragmentHomeRootBinding>(FragmentHomeRootBinding::inflate) {
 
     /*

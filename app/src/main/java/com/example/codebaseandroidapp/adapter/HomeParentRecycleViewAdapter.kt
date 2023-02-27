@@ -1,7 +1,6 @@
 package com.example.codebaseandroidapp.adapter
 
 import android.app.Activity
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.codebaseandroidapp.Application
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentBinding
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentSliderBinding
 import com.example.codebaseandroidapp.di.ActitvityAbstractModule
@@ -23,10 +21,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
-import javax.inject.Singleton
 
 private const val ITEM_TYPE_SLIDER = 0
 private const val ITEM_TYPE_LANSCAPE = 1
