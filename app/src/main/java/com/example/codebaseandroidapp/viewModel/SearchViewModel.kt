@@ -1,7 +1,6 @@
 package com.example.codebaseandroidapp.viewModel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -24,14 +23,14 @@ class SearchViewModel @Inject constructor(
 
         fun searchMovies(query: String) {
             currentKey = query
-            searchPagerFlow =  repository.searchMovies(query)
+            searchPagerFlow = repository.searchMovies(query)
                 .cachedIn(viewModelScope)
         }
 }
 
-class SearchViewModelFactory(
-    private val repository: MovieRepository
-) : ViewModelProvider.NewInstanceFactory() {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>) = SearchViewModel(repository) as T
-}
+//class SearchViewModelFactory(
+//    private val repository: MovieRepository
+//) : ViewModelProvider.NewInstanceFactory() {
+//    @Suppress("UNCHECKED_CAST")
+//    override fun <T : ViewModel> create(modelClass: Class<T>) = SearchViewModel(repository) as T
+//}

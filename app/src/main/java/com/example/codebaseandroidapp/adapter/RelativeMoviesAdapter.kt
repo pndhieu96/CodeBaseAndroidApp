@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.codebaseandroidapp.callBack.MovieDiffCallback
+import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.databinding.RecycleviewItemRelativeMoviesBinding
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.utils.ConstantUtils

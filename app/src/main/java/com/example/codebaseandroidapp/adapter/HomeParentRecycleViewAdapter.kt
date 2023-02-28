@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentBinding
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentSliderBinding
 import com.example.codebaseandroidapp.di.ActitvityAbstractModule
@@ -107,7 +108,7 @@ class HomeParentRecycleViewAdapter @Inject constructor(
     }
 
     fun setCallBack(mCallback: MovieListen) {
-        this.callBack = mCallback;
+        this.callBack = mCallback
     }
 
     class LanscapeViewHolder private constructor(

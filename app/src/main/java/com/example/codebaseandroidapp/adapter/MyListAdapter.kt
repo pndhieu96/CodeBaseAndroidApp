@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.codebaseandroidapp.callBack.MovieDiffCallback
+import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.databinding.RecycleviewItemMyListBinding
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.utils.ConstantUtils
@@ -18,7 +20,7 @@ class MyListAdapter @Inject constructor():
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = ViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        var movie = getItem(position)
+        val movie = getItem(position)
         (holder as ViewHolder).bind(movie)
         holder.setSearchCallBack(callBack)
     }

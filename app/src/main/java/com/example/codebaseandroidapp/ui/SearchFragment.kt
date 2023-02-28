@@ -4,18 +4,21 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
-import com.example.codebaseandroidapp.adapter.MovieListen
+import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.adapter.SearchAdapter
 import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentSearchBinding
@@ -37,9 +40,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.searchMovies(viewModel.currentKey)
-        lifecycleScope.launch {
-            viewModel.searchPagerFlow.collectLatest {
-                adapter.submitData(it)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchPagerFlow.collectLatest {
+                    adapter.submitData(it)
+                }
             }
         }
     }

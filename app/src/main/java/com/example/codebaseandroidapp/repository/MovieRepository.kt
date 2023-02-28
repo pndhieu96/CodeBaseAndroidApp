@@ -19,27 +19,60 @@ class MovieRepository @Inject constructor(
     @AppModule.IoDispatcher
     private val dispatcher: CoroutineDispatcher
 ) {
-    val genres: LiveData<List<Genre>> = database.genreDao().getGenres()
-
-    suspend fun fetchGenres() : Genres {
-        val respose = netWorkService.getGenres()
-        database.genreDao().insertAll(respose.genres)
+    suspend fun fetchRelativeMovies(id: String) : Resource<Movies> {
+        val respose = netWorkService.getRelativeMovies(id)
         return respose
     }
 
-    suspend fun fetchMoviesWithGenre(id: String) : Movies {
-        val respose = netWorkService.getMoviesWithGenre(id)
-        return respose
+    suspend fun fetchMyMovieList() : Resource<List<Movie>> {
+        val movies = mutableListOf<Movie>()
+        val myListIds = getMyList()
+        myListIds.forEach {
+            val resource = netWorkService.getDetail(it.id.toString())
+            if(resource.status == ResourceStatus.SUCCESS) {
+                resource.data?.let { data -> movies.add(data.transformToMovie()) }
+            }
+        }
+        if(movies.size > 0) {
+            return Resource.Success(movies)
+        } else {
+            return Resource.Error(ApiError())
+        }
     }
 
-    suspend fun fetchDetailOfMovie(id: String) : Detail {
-        val respose = netWorkService.getDetail(id)
-        return respose
+    suspend fun fetchDetail(id: String) : Resource<Detail> {
+        val resource = netWorkService.getDetail(id)
+        if(resource.status == ResourceStatus.SUCCESS) {
+            val myList = getMyList()
+            resource.data?.let {
+                if (isInMyMist(myList, it.id)) {
+                    it.is_love = true
+                }
+            }
+        }
+
+        return resource
     }
 
-    suspend fun getRelativeMovies(id: String) : Movies {
-        val respose = netWorkService.getRelativeMovie(id)
-        return respose
+    suspend fun fetchMoviesWithGenres() : Resource<List<MoviesWithGenre>> {
+        val mMoviesWithGenre : MutableList<MoviesWithGenre> = mutableListOf()
+        val genresResource = netWorkService.getGenres()
+        if(genresResource.status == ResourceStatus.SUCCESS) {
+            genresResource.data?.genres?.subList(0, 10)?.forEachIndexed { _, genre ->
+                val moviesResource = netWorkService.getMoviesWithGenres(genre.id.toString())
+                if(moviesResource.status == ResourceStatus.SUCCESS) {
+                    moviesResource.data?.results?.let { movieList ->
+                        val moviesWithGenre = MoviesWithGenre(genre.id, genre.name, movieList)
+                        mMoviesWithGenre.add(moviesWithGenre)
+                    }
+                }
+            }
+        }
+        if(mMoviesWithGenre.size > 0) {
+            return Resource.Success(mMoviesWithGenre)
+        } else {
+            return Resource.Error(ApiError())
+        }
     }
 
     suspend fun AddToMyList(id: LoveMovieId) : Long {
@@ -63,6 +96,15 @@ class MovieRepository @Inject constructor(
             pagingSourceFactory = { MoviePagingSource(netWorkService, query) }
         ).flow
     }
+
+    fun isInMyMist(list : List<LoveMovieId>, id: Int): Boolean {
+        list.forEach {
+            if(it.id == id) {
+                return true
+            }
+        }
+        return false
+    }
 }
 
-public const val ITEMS_PER_PAGE = 20
+const val ITEMS_PER_PAGE = 20

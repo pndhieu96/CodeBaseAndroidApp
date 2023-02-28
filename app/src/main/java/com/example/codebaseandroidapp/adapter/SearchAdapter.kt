@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.codebaseandroidapp.callBack.MovieDiffCallback
+import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.databinding.RecycleviewItemSearchBinding
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.utils.ConstantUtils
@@ -40,6 +42,7 @@ class SearchAdapter @Inject constructor():
                 Glide.with(binding.root.context)
                     .load(Utils.getImagePath(it.poster_path, ConstantUtils.FILE_SIZE_PORTRAIT))
                     .into(binding.ivMovie)
+
                 binding.cardView.setOnClickListener { _ ->
                     callBack?.onCLick(it)
                 }

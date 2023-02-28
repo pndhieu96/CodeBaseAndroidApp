@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
-import com.example.codebaseandroidapp.adapter.MovieListen
+import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.adapter.MyListAdapter
 import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentMyListBinding
+import com.example.codebaseandroidapp.utils.Utils.Companion.observer
 import com.example.codebaseandroidapp.viewModel.MyListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -25,6 +26,13 @@ class MyListFragment : BaseFragment<FragmentMyListBinding>(FragmentMyListBinding
     private val viewModel: MyListViewModel by viewModels()
 
     override fun initObserve() {
+        viewModel.myList.observer(
+            viewLifecycleOwner,
+            onSuccess = {
+                adapter.submitList(it)
+                binding.progressBar.visibility = View.GONE
+            }
+        )
     }
 
     override fun initialize() {
@@ -37,10 +45,6 @@ class MyListFragment : BaseFragment<FragmentMyListBinding>(FragmentMyListBinding
         })
 
         binding.progressBar.visibility = View.VISIBLE
-        viewModel.myList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            binding.progressBar.visibility = View.GONE
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +75,6 @@ class MyListFragment : BaseFragment<FragmentMyListBinding>(FragmentMyListBinding
 
     override fun onResume() {
         super.onResume()
-        Log.d("MyListFragment", "onResume")
         viewModel.getMyList()
         requireActivity().onBackPressedDispatcher.addCallback(
             this,  // LifecycleOwner

@@ -1,9 +1,5 @@
 package com.example.codebaseandroidapp.model
 
-import androidx.room.*
-import com.example.codebaseandroidapp.utils.Converters
-
-
 data class Movie(
     var id: Int,
     var adult: Boolean,

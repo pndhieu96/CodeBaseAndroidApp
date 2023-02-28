@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.renderscript.Allocation
@@ -23,13 +22,14 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.navigation.NavDeepLinkBuilder
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import com.example.codebaseandroidapp.Application
 import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
+import com.example.codebaseandroidapp.model.ApiError
+import com.example.codebaseandroidapp.model.Resource
+import com.example.codebaseandroidapp.model.ResourceStatus
 import com.example.codebaseandroidapp.receiver.NotificationActionReceiver
 import com.example.codebaseandroidapp.service.SongService
 import com.example.codebaseandroidapp.utils.ConstantUtils.Companion.CHANNEL_ID
@@ -46,20 +46,18 @@ import java.util.*
 
 class Utils {
     companion object {
-        fun getOriginImagePath(path: String): String {
+        fun getOriginImagePath(path: String?): String {
             path?.let {
                 return "https://image.tmdb.org/t/p/original$it"
             }
             return ""
         }
 
-        fun getImagePath(path: String, fileSize: String): String {
-            var url = ""
+        fun getImagePath(path: String?, fileSize: String): String {
             path?.let {
-                url = "https://image.tmdb.org/t/p/$fileSize$it"
+                return "https://image.tmdb.org/t/p/$fileSize$it"
             }
-            Log.d("getImagePath", url)
-            return url
+            return ""
         }
 
         fun hideKeyboard(activity: Activity) {
@@ -350,6 +348,27 @@ class Utils {
                 }
 
                 throw it
+            }
+        }
+
+        fun <T> LiveData<Resource<T>>.observer(
+            owner: LifecycleOwner,
+            onSuccess: ((T) -> Unit)? = null,
+            onError: ((ApiError) -> Unit)? = null,
+            onLoading: (() -> Unit)? = null
+        ) {
+            observe(owner) {
+                when (it.status) {
+                    ResourceStatus.SUCCESS -> it.getContentIfNotHandled()?.let { data ->
+                        onSuccess?.invoke(data)
+                    }
+                    ResourceStatus.ERROR -> it.getErrorIfNotHandled()?.let { error ->
+                        onError?.invoke(error)
+                    }
+                    ResourceStatus.LOADING -> it.isLoadingIfNotHandled()?.let { loading ->
+                        onLoading?.invoke()
+                    }
+                }
             }
         }
     }

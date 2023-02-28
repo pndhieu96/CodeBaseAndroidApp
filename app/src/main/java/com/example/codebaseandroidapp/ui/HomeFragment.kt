@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.adapter.HomeParentRecycleViewAdapter
-import com.example.codebaseandroidapp.adapter.MovieListen
+import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentHomeBinding
 import com.example.codebaseandroidapp.model.MoviesWithGenre
+import com.example.codebaseandroidapp.utils.Utils.Companion.observer
 import com.example.codebaseandroidapp.viewModel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -41,33 +42,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val viewModel: HomeViewModel by viewModels()
 
     override fun initObserve() {
-        viewModel.moviesWithGenre.observe(viewLifecycleOwner) {
-            it?.let {
+        viewModel.moviesWithGenre.observer(
+            viewLifecycleOwner,
+            onSuccess = {
                 showList(it)
+            },
+            onError = {
+                showError(it.statusMessage)
+            },
+            onLoading = {
+                showLoadding()
             }
-        }
-        viewModel.error.observe(viewLifecycleOwner) {
-            it?.let {
-                showError(it.message.toString())
-            }
-        }
+        )
     }
 
     override fun initialize() {
         binding.recycleViewParent.adapter = adapter
         binding.recycleViewParent.layoutManager = LinearLayoutManager(activity)
-        showLoadding()
         adapter.setCallBack(MovieListen {
-            /**
-             * Navigation-5
-             * NavController
-             * Dùng navCOntroller.navigate để navigate từ destination hiện tại đến 1 destination khác
-             * trong navGraph và truyền vào action hoặc id của destination tương ứng kèm các arguments cần
-             * thiết dưới dạng 1 bundle
-             *
-             * Nếu navigate fragment 1 -> fragment 2, thì fragment 1 sẽ rơi vào trạng thái onStop
-             * Khi từ fragment 2 back lại thì fragment 1 sẽ bắt đầu từ trạng thái onCreateView
-             */
             /**
              * Navigation-5
              * NavController
@@ -86,10 +78,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onResume() {
         super.onResume()
 
-        if (viewModel.moviesWithGenre.value.isNullOrEmpty()
-            || viewModel.moviesWithGenre.value?.size == 0
+        if (viewModel.moviesWithGenre.value?.data.isNullOrEmpty()
+            || viewModel.moviesWithGenre.value?.data!!.size == 0
         ) {
-            showLoadding()
             viewModel.getGenres()
         }
 

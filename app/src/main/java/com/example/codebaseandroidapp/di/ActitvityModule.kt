@@ -1,6 +1,8 @@
 package com.example.codebaseandroidapp.di
 
 import androidx.recyclerview.widget.DiffUtil
+import com.example.codebaseandroidapp.callBack.MovieDiffCallback
+import com.example.codebaseandroidapp.callBack.MoviesWithGenreDiffCallback
 import com.example.codebaseandroidapp.adapter.*
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.model.MoviesWithGenre
@@ -49,7 +51,7 @@ class ActitvityRetainedModule {
     fun provideOkHttpClient (
         interceptor : HttpLoggingInterceptor
     ): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(interceptor).build();
+        return OkHttpClient.Builder().addInterceptor(interceptor).build()
     }
 
     @Provides

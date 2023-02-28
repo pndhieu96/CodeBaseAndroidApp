@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeChildBinding
 import com.example.codebaseandroidapp.di.ActitvityAbstractModule
 import com.example.codebaseandroidapp.model.Movie

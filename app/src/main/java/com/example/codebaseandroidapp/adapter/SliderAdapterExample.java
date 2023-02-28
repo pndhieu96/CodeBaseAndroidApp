@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.codebaseandroidapp.R;
+import com.example.codebaseandroidapp.callBack.MovieListen;
 import com.example.codebaseandroidapp.model.Movie;
 import com.example.codebaseandroidapp.utils.ConstantUtils;
 import com.example.codebaseandroidapp.utils.Utils;

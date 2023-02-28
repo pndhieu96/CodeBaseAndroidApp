@@ -1,4 +1,4 @@
-package com.example.codebaseandroidapp.adapter
+package com.example.codebaseandroidapp.callBack
 
 import com.example.codebaseandroidapp.model.Movie
 

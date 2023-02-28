@@ -1,13 +1,11 @@
 package com.example.codebaseandroidapp.viewModel
 
 import androidx.lifecycle.*
-import com.example.codebaseandroidapp.model.Detail
-import com.example.codebaseandroidapp.model.LoveMovieId
-import com.example.codebaseandroidapp.model.Movie
-import com.example.codebaseandroidapp.model.Movies
+import com.example.codebaseandroidapp.model.*
 import com.example.codebaseandroidapp.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,33 +13,25 @@ class DetailViewModel @Inject constructor(
     val movieRepository: MovieRepository
 ) : ViewModel() {
 
-    private val _detailInfo = MutableLiveData<Detail>()
-    val detailInfo: LiveData<Detail>
+    private val _detailInfo = MutableLiveData<Resource<Detail>>()
+    val detailInfo: LiveData<Resource<Detail>>
         get() = _detailInfo
 
-    private val _relativeMovies = MutableLiveData<Movies>()
-    val relativeMovies: LiveData<Movies>
+    private val _relativeMovies = MutableLiveData<Resource<Movies>>()
+    val relativeMovies: LiveData<Resource<Movies>>
         get() = _relativeMovies
 
     fun getDetail(id: String) {
         viewModelScope.launch {
-            try {
-                val detail = movieRepository.fetchDetailOfMovie(id)
-                val myList = movieRepository.getMyList()
-                if(isInMyMist(myList, detail.id)) {
-                    detail.is_love = true
-                }
-                _detailInfo.value = detail
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            val resource = movieRepository.fetchDetail(id)
+            _detailInfo.value = resource
         }
     }
 
     fun getRelativeMovie(id: String) {
         viewModelScope.launch {
             try {
-                val movies = movieRepository.getRelativeMovies(id)
+                val movies = movieRepository.fetchRelativeMovies(id)
                 _relativeMovies.value = movies
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -49,21 +39,13 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun isInMyMist(list : List<LoveMovieId>, id: Int): Boolean {
-        list.forEach {
-            if(it.id == id) {
-                return true
-            }
-        }
-        return false
-    }
-
     fun addMyList(id: LoveMovieId) {
         viewModelScope.launch {
             try {
                 movieRepository.AddToMyList(id)
                 _detailInfo.value = _detailInfo.value?.apply {
-                    this.is_love = true
+                    this.data?.is_love = true
+                    this.hasBeenHandled = AtomicBoolean(false)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -76,7 +58,8 @@ class DetailViewModel @Inject constructor(
             try {
                 movieRepository.removeFromMyList(id)
                 _detailInfo.value = _detailInfo.value?.apply {
-                    this.is_love = false
+                    this.data?.is_love = false
+                    this.hasBeenHandled = AtomicBoolean(false)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -85,9 +68,9 @@ class DetailViewModel @Inject constructor(
     }
 }
 
-class DetailViewModelFactory(
-    private val repository: MovieRepository
-) : ViewModelProvider.NewInstanceFactory() {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>) = DetailViewModel(repository) as T
-}
+//class DetailViewModelFactory(
+//    private val repository: MovieRepository
+//) : ViewModelProvider.NewInstanceFactory() {
+//    @Suppress("UNCHECKED_CAST")
+//    override fun <T : ViewModel> create(modelClass: Class<T>) = DetailViewModel(repository) as T
+//}

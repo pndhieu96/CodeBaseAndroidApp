@@ -8,44 +8,55 @@ import com.example.codebaseandroidapp.databinding.FragmentDetailBinding
 import com.example.codebaseandroidapp.utils.Utils
 import com.example.codebaseandroidapp.viewModel.DetailViewModel
 import android.graphics.PorterDuffColorFilter
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.codebaseandroidapp.adapter.MovieListen
+import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.adapter.RelativeMoviesAdapter
 import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.model.LoveMovieId
 import com.example.codebaseandroidapp.utils.ConstantUtils
+import com.example.codebaseandroidapp.utils.Utils.Companion.observer
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
 
-    private val viewModel :  DetailViewModel by viewModels()
+    private val viewModel: DetailViewModel by viewModels()
     private var id: String? = null
-    @Inject lateinit var adapter: RelativeMoviesAdapter
+
+    @Inject
+    lateinit var adapter: RelativeMoviesAdapter
 
     override fun initObserve() {
-        viewModel.detailInfo.observe(viewLifecycleOwner) {
-            binding.tvTitle.text = it.title
-            binding.tvDes.text = it.overview
-            binding.tvSubTitle.text =
-                it.release_date + "  " + it.vote_average + "  " + it.original_language
-            Glide.with(requireContext())
-                .load(Utils.getImagePath(it.backdrop_path, ConstantUtils.FILE_SIZE_LANDSCAPE))
-                .into(binding.ivBgTop)
-            if(it.is_love) {
-                binding.btnLove.text = "Remove from my list"
-            } else {
-                binding.btnLove.text = "Love it"
-            }
-        }
+        viewModel.detailInfo.observer(viewLifecycleOwner,
+            onSuccess = {it->
+                binding.tvTitle.text = it.title
+                binding.tvDes.text = it.overview
+                binding.tvSubTitle.text =
+                    it.release_date + "  " + it.vote_average + "  " + it.original_language
+                Glide.with(requireContext())
+                    .load(Utils.getImagePath(it.backdrop_path, ConstantUtils.FILE_SIZE_LANDSCAPE))
+                    .into(binding.ivBgTop)
+                if (it.is_love) {
+                    binding.btnLove.text = "Remove from my list"
+                } else {
+                    binding.btnLove.text = "Love it"
+                }
+            }, onError = {error->
+                Toast.makeText(context, error.statusMessage, Toast.LENGTH_SHORT).show()
+            })
 
-        viewModel.relativeMovies.observe(viewLifecycleOwner) {
-            adapter.submitList(it.results)
-        }
+        viewModel.relativeMovies.observer(viewLifecycleOwner,
+            onSuccess = {data->
+                adapter.submitList(data.results)
+            }, onError = {error->
+                Toast.makeText(context, error.statusMessage, Toast.LENGTH_SHORT).show()
+            })
+
     }
 
     override fun initialize() {
@@ -55,31 +66,43 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         }
         val iconBack = resources.getDrawable(R.drawable.ic_back, null)
         binding.button.setImageDrawable(iconBack)
-        binding.button.setColorFilter(ContextCompat.getColor(requireContext(), android.R.color.white),
-            PorterDuff.Mode.SRC_ATOP);
+        binding.button.setColorFilter(
+            ContextCompat.getColor(requireContext(), android.R.color.white),
+            PorterDuff.Mode.SRC_ATOP
+        )
 
         val iconHeart = resources.getDrawable(R.drawable.heart, null).mutate()
-        iconHeart.setColorFilter(PorterDuffColorFilter(ContextCompat.getColor(requireContext(), android.R.color.white), PorterDuff.Mode.SRC_IN))
-        iconHeart.setBounds(50, 0, 110, 60);
+        iconHeart.setColorFilter(
+            PorterDuffColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    android.R.color.white
+                ), PorterDuff.Mode.SRC_IN
+            )
+        )
+        iconHeart.setBounds(50, 0, 110, 60)
         binding.btnLove.setCompoundDrawables(iconHeart, null, null, null)
 
         binding.btnLove.setOnClickListener {
             viewModel.detailInfo.value?.let {
-                if(it.id != 0) {
-                    if(it.is_love) {
-                        viewModel.removeFromMyList(it.id)
+                if (it.data?.id != 0) {
+                    if (it.data?.is_love == true) {
+                        viewModel.removeFromMyList(it.data.id)
                     } else {
-                        viewModel.addMyList(LoveMovieId(0,it.id))
+                        it.data?.let { detail ->
+                            viewModel.addMyList(LoveMovieId(0, detail.id))
+                        }
                     }
                 }
             }
         }
 
-        adapter.setCallBack(MovieListen{
+        adapter.setCallBack(MovieListen {
             val bundle = bundleOf("movieId" to it.id.toString())
             navController.navigate(R.id.action_detailFragment_self, bundle)
         })
-        binding.rvRelativeMovies.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
+        binding.rvRelativeMovies.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvRelativeMovies.adapter = adapter
 
         id?.let {
