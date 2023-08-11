@@ -59,13 +59,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
     override fun initialize() {
         val layoutManager = GridLayoutManager(requireContext(), 2)
-        /**
-         * Paging-3
-         * addLoadStateListener truyền vào 1 CombinedLoadStates: để lắng nghe trạng thái hiện tại của việc load dữ liệu như
-         * CombinedLoadStates.refresh: Đại diện cho trạng thái khi bắt đầu tải
-         * CombinedLoadStates.prepend: Đại diện cho trạng thái tải khi bắt đầu danh sách
-         * CombinedLoadStates.append: Đại diện cho trạng thái tải khi ở cuối danh sách
-         */
         adapter.addLoadStateListener { loadState ->
             Log.d("SearchFragment", loadState.toString())
             if (loadState.refresh is LoadState.Loading) {

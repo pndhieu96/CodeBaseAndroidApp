@@ -67,10 +67,3 @@ class DetailViewModel @Inject constructor(
         }
     }
 }
-
-//class DetailViewModelFactory(
-//    private val repository: MovieRepository
-//) : ViewModelProvider.NewInstanceFactory() {
-//    @Suppress("UNCHECKED_CAST")
-//    override fun <T : ViewModel> create(modelClass: Class<T>) = DetailViewModel(repository) as T
-//}

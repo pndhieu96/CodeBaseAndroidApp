@@ -27,10 +27,3 @@ class SearchViewModel @Inject constructor(
                 .cachedIn(viewModelScope)
         }
 }
-
-//class SearchViewModelFactory(
-//    private val repository: MovieRepository
-//) : ViewModelProvider.NewInstanceFactory() {
-//    @Suppress("UNCHECKED_CAST")
-//    override fun <T : ViewModel> create(modelClass: Class<T>) = SearchViewModel(repository) as T
-//}

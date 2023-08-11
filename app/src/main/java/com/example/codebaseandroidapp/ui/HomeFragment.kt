@@ -21,24 +21,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    /**
-     * Navigation-4
-     * NavController
-     * Dùng findNavController trong fragment mà fragment đó là 1 destination trong navGraph để lấy được
-     * instance của 1 navController
-     */
     @Inject lateinit var adapter: HomeParentRecycleViewAdapter
 
-    /**
-     * cách khác để khởi tạo 1 viewmodel từ by viewModels
-     * private val viewModel: HomeViewModel by viewModels{
-     *     HomeViewModelFactory((requireActivity().application as Application).repository)
-     * }
-     */
-
-    /**
-     * inject instance của viewmodel với hilt
-     */
     private val viewModel: HomeViewModel by viewModels()
 
     override fun initObserve() {
@@ -60,16 +44,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.recycleViewParent.adapter = adapter
         binding.recycleViewParent.layoutManager = LinearLayoutManager(activity)
         adapter.setCallBack(MovieListen {
-            /**
-             * Navigation-5
-             * NavController
-             * Dùng navController.navigate để navigate từ destination hiện tại đến 1 destination khác
-             * trong navGraph và truyền vào action hoặc id của destination tương ứng kèm các arguments cần
-             * thiết dưới dạng 1 bundle
-             *
-             * Nếu navigate fragment 1 -> fragment 2, thì fragment 1 sẽ rơi vào trạng thái onStop
-             * Khi từ fragment 2 back lại thì fragment 1 sẽ bắt đầu từ trạng thái onCreateView
-             */
             val bundle = bundleOf("movieId" to it.id.toString())
             navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
         })
