@@ -45,11 +45,13 @@ class DownloadIntentService : IntentService("DownloadIntentService") {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreate() {
         super.onCreate()
         Log.i(TAG, "onCreate")
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onHandleIntent(intent: Intent?) {
         when (intent?.action) {
             ACTION_DOWNLOAD -> {
@@ -65,6 +67,7 @@ class DownloadIntentService : IntentService("DownloadIntentService") {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onDestroy() {
         Log.i(TAG, "onDestroy")
         super.onDestroy()

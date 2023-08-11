@@ -59,8 +59,6 @@ class ServiceFragment : BaseFragment<FragmentServiceBinding>(FragmentServiceBind
             context?.let {
                 if(binding.progressBar.visibility != VISIBLE && mBound) {
                     binding.progressBar.visibility = VISIBLE
-//                        Delete file with Intent Service
-//                        DownloadIntentService.startActionDelete(it, ConstantUtils.SONG_URL)
                     if(mService?.handleActionDelete(ConstantUtils.SONG_URL) == true) {
                         if (Utils.songFile().exists()) {
                             enablePlayButton()
@@ -74,12 +72,11 @@ class ServiceFragment : BaseFragment<FragmentServiceBinding>(FragmentServiceBind
             }
         }
         binding.btnPlay.setOnClickListener {
-            context?.let {
-
+            context?.let { context ->
                 //Start a foreground service
-                Intent(it, SongService::class.java).apply {
-                    this.action = SongService.ACTION_CREATE
-                    ContextCompat.startForegroundService(it, intent)
+                Intent(context, SongService::class.java).let { intent ->
+                    intent.action = SongService.ACTION_CREATE
+                    ContextCompat.startForegroundService(context, intent)
                 }
             }
         }

@@ -16,6 +16,7 @@ import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.utils.Utils
 import android.widget.RemoteViews
 import android.app.PendingIntent
+import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.codebaseandroidapp.model.MusicControl
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,14 +49,17 @@ class SongService : Service() {
     lateinit var player: MusicControl
 
     override fun onBind(p0: Intent?): IBinder? {
+        Log.i("SongService", "onBind")
         return null
     }
 
     override fun onCreate() {
         super.onCreate()
+        Log.i("SongService", "onCreate")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.i("SongService", "onStartCommand")
         intent?.let {
             val broadcastIntent = Intent(NOTIFICATION_ACTION)
             when(it.action) {
@@ -86,6 +90,7 @@ class SongService : Service() {
     }
 
     override fun onDestroy() {
+        Log.i("SongService", "onDestroy")
         player.stopMusic()
         Application.isPlayingSong = false
         super.onDestroy()

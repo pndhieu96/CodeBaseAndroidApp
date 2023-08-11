@@ -63,7 +63,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             /**
              * Navigation-5
              * NavController
-             * Dùng navCOntroller.navigate để navigate từ destination hiện tại đến 1 destination khác
+             * Dùng navController.navigate để navigate từ destination hiện tại đến 1 destination khác
              * trong navGraph và truyền vào action hoặc id của destination tương ứng kèm các arguments cần
              * thiết dưới dạng 1 bundle
              *

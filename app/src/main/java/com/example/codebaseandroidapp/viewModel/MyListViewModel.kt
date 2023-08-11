@@ -17,9 +17,10 @@ class MyListViewModel @Inject constructor(
     get() = _myList
 
     fun getMyList() {
+        _myList.value = Resource.Loading()
         viewModelScope.launch {
-            val movies = respository.fetchMyMovieList()
-            _myList.value = movies
+            val resource = respository.fetchMyMovieList()
+            _myList.value = resource
         }
     }
 }

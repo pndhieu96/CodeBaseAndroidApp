@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("LC-MainActivity", "onCreate")
+        Log.d("ActivityLifecycle", "onCreate")
         this.supportActionBar!!.hide()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -65,32 +65,31 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
 
     override fun onStart() {
         super.onStart()
-        Log.d("LC-MainActivity", "onStart")
+        Log.d("ActivityLifecycle", "onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("LC-MainActivity", "onResume")
+        Log.d("ActivityLifecycle", "onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("LC-MainActivity", "onPause")
+        Log.d("ActivityLifecycle", "onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("LC-MainActivity", "onStop")
+        Log.d("ActivityLifecycle", "onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("LC-MainActivity", "onDestroy")
+        Log.d("ActivityLifecycle", "onDestroy")
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        Log.d("LC-MainActivity", "onBackPressed")
+        Log.d("MainActivity", "onBackPressed")
     }
 
     override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {

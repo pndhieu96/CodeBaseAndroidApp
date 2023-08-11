@@ -1,6 +1,7 @@
 package com.example.codebaseandroidapp.network
 
 import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.example.codebaseandroidapp.model.Movie
 
 /*
@@ -39,6 +40,10 @@ class MoviePagingSource(
         } catch (e: Exception) {
             return LoadResult.Error(e)
         }
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+        TODO("Not yet implemented")
     }
 
 }

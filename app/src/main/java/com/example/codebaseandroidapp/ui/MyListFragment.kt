@@ -31,6 +31,9 @@ class MyListFragment : BaseFragment<FragmentMyListBinding>(FragmentMyListBinding
             onSuccess = {
                 adapter.submitList(it)
                 binding.progressBar.visibility = View.GONE
+            },
+            onLoading = {
+                binding.progressBar.visibility = View.VISIBLE
             }
         )
     }
@@ -43,8 +46,6 @@ class MyListFragment : BaseFragment<FragmentMyListBinding>(FragmentMyListBinding
             val bundle = bundleOf("movieId" to it.id.toString())
             navController.navigate(R.id.action_myListFragment_to_detailFragment, bundle)
         })
-
-        binding.progressBar.visibility = View.VISIBLE
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -19,18 +19,18 @@ class NotificationActionReceiver : BroadcastReceiver() {
             Log.i("ActionReceiver", "onReceive: " + intent.getStringExtra("ACTION"))
             when(it) {
                 SongService.ACTION_PLAY -> {
-                    context?.let {
-                        Intent(it, SongService::class.java).apply {
-                            this.setAction(SongService.ACTION_PLAY)
-                            ContextCompat.startForegroundService(it, intent)
+                    context?.let { context ->
+                        Intent(context, SongService::class.java).let { intent ->
+                            intent.setAction(SongService.ACTION_PLAY)
+                            ContextCompat.startForegroundService(context, intent)
                         }
                     }
                 }
                 SongService.ACTION_PAUSE -> {
-                    context?.let {
-                        Intent(it, SongService::class.java).apply {
+                    context?.let { context ->
+                        Intent(context, SongService::class.java).let { intent ->
                             intent.setAction(SongService.ACTION_PAUSE)
-                            ContextCompat.startForegroundService(it, intent)
+                            ContextCompat.startForegroundService(context, intent)
                         }
                     }
                 }
