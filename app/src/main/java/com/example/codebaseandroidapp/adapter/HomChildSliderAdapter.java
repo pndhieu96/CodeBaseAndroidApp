@@ -1,5 +1,6 @@
 package com.example.codebaseandroidapp.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -19,13 +20,13 @@ import com.smarteist.autoimageslider.SliderViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SliderAdapterExample extends
-        SliderViewAdapter<SliderAdapterExample.SliderAdapterVH> {
+public class HomChildSliderAdapter extends
+        SliderViewAdapter<HomChildSliderAdapter.SliderAdapterVH> {
     private MovieListen callBack = null;
-    private Context context;
+    private final Context context;
     private List<Movie> mSliderItems = new ArrayList<>();
 
-    public SliderAdapterExample(Context context) {
+    public HomChildSliderAdapter(Context context) {
         this.context = context;
     }
 
@@ -50,6 +51,7 @@ public class SliderAdapterExample extends
 
     @Override
     public SliderAdapterVH onCreateViewHolder(ViewGroup parent) {
+        @SuppressLint("InflateParams")
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_slider_layout_item, null);
         return new SliderAdapterVH(inflate);
     }
@@ -67,11 +69,8 @@ public class SliderAdapterExample extends
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(callBack != null) callBack.onCLick(sliderItem);
-            }
+        viewHolder.itemView.setOnClickListener(v -> {
+            if(callBack != null) callBack.onCLick(sliderItem);
         });
     }
 
@@ -81,7 +80,7 @@ public class SliderAdapterExample extends
         return mSliderItems.size();
     }
 
-    class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
+    static class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
 
         View itemView;
         ImageView imageViewBackground;

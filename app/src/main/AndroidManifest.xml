@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".Application"
@@ -25,33 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".service.DownloadIntentService"
-            android:exported="false" />
-        <service
-            android:name=".service.SongService"
-            android:enabled="true"
-            android:exported="false"/>
-        <service
-            android:name=".service.DeleteBoundService"
-            android:enabled="true"
-            android:exported="false"/>
-        <service android:name=".service.PushNotificationService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action
-                    android:name="com.google.firebase.MESSAGING_EVENT">
-                </action>
-            </intent-filter>
-        </service>
-
-        <receiver
-            android:name=".receiver.NotificationActionReceiver"
-            android:enabled="true"
-            android:exported="false">
-        </receiver>
     </application>
 
 </manifest>

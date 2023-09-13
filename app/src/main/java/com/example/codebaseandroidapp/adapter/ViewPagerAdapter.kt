@@ -16,7 +16,7 @@ class ViewPagerAdapter @Inject constructor(
     var currentFragment: Fragment? = null
 
     override fun getItemCount(): Int {
-        return 4
+        return 2
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -28,7 +28,6 @@ class ViewPagerAdapter @Inject constructor(
     }
 
     override fun getItemId(position: Int): Long {
-
         currentFragment = fragmentManager.findFragmentByTag("f"+position)
         return super.getItemId(position)
     }

@@ -3,7 +3,6 @@ package com.example.codebaseandroidapp.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -29,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,7 +60,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     override fun initialize() {
         val layoutManager = GridLayoutManager(requireContext(), 2)
         adapter.addLoadStateListener { loadState ->
-            Log.d("SearchFragment", loadState.toString())
+            Timber.d(loadState.toString())
             if (loadState.refresh is LoadState.Loading) {
                 binding.progressBar.visibility = VISIBLE
             } else {

@@ -64,5 +64,9 @@ class Utils {
                 }
             }
         }
+
+        fun String?.checkNull(): String {
+            return if (this.isNullOrEmpty()) "" else this
+        }
     }
 }

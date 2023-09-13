@@ -25,14 +25,8 @@ import dagger.hilt.android.components.ActivityComponent
 import javax.inject.Inject
 
 private const val ITEM_TYPE_SLIDER = 0
-private const val ITEM_TYPE_LANSCAPE = 1
+private const val ITEM_TYPE_LANDSCAPE = 1
 private const val ITEM_TYPE_PORTRAIT = 2
-
-/**
- * Hilt-7
- * Sử dụng EntryPoint để inject những instances của những dependencies cho những class mà không
- * được hỗ trợ bởi hilt.
- */
 
 class HomeParentRecycleViewAdapter @Inject constructor(
         @ActitvityAbstractModule.MovieWithGenreItemCallBack
@@ -42,7 +36,7 @@ class HomeParentRecycleViewAdapter @Inject constructor(
         movieCallBack
     ) {
 
-    val hiltEntryPoint = EntryPointAccessors.fromActivity(
+    private val hiltEntryPoint = EntryPointAccessors.fromActivity(
         activity,
         HomeParentRecycleViewAdapterEntryPoint::class.java
     )
@@ -50,16 +44,16 @@ class HomeParentRecycleViewAdapter @Inject constructor(
     @InstallIn(ActivityComponent::class)
     @EntryPoint
     interface HomeParentRecycleViewAdapterEntryPoint {
-        fun homeChildLanscapeRecycleViewAdapter() : HomeChildLanscapeRecycleViewAdapter
-        fun homeChildPortraintRecycleViewAdapter() : HomeChildPortraitRecycleViewAdapter
+        fun homeChildLandscapeRecycleViewAdapter() : HomeChildLandscapeRecycleViewAdapter
+        fun homeChildPortraitRecycleViewAdapter() : HomeChildPortraitRecycleViewAdapter
     }
 
-    fun getHomeChildLanscapeRecycleViewAdapter(): HomeChildLanscapeRecycleViewAdapter {
-        return hiltEntryPoint.homeChildLanscapeRecycleViewAdapter()
+    private fun getHomeChildLandscapeRecycleViewAdapter(): HomeChildLandscapeRecycleViewAdapter {
+        return hiltEntryPoint.homeChildLandscapeRecycleViewAdapter()
     }
 
-    fun getHomeChildPortraitRecycleViewAdapter(): HomeChildPortraitRecycleViewAdapter {
-        return hiltEntryPoint.homeChildPortraintRecycleViewAdapter()
+    private fun getHomeChildPortraitRecycleViewAdapter(): HomeChildPortraitRecycleViewAdapter {
+        return hiltEntryPoint.homeChildPortraitRecycleViewAdapter()
     }
 
     private var callBack: MovieListen? = null
@@ -67,7 +61,7 @@ class HomeParentRecycleViewAdapter @Inject constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when(viewType) {
             ITEM_TYPE_SLIDER -> return SliderViewHolder.from(parent)
-            ITEM_TYPE_LANSCAPE -> return LanscapeViewHolder.from(parent, getHomeChildLanscapeRecycleViewAdapter())
+            ITEM_TYPE_LANDSCAPE -> return LanscapeViewHolder.from(parent, getHomeChildLandscapeRecycleViewAdapter())
             ITEM_TYPE_PORTRAIT -> return PortraitViewHolder.from(parent, getHomeChildPortraitRecycleViewAdapter())
             else -> return PortraitViewHolder.from(parent, getHomeChildPortraitRecycleViewAdapter())
         }
@@ -98,12 +92,12 @@ class HomeParentRecycleViewAdapter @Inject constructor(
     }
 
     override fun getItemViewType(position: Int): Int {
-        if(position == 0) {
-            return ITEM_TYPE_SLIDER
+        return if(position == 0) {
+            ITEM_TYPE_SLIDER
         } else if(position%3==0) {
-            return ITEM_TYPE_LANSCAPE
+            ITEM_TYPE_LANDSCAPE
         } else {
-            return ITEM_TYPE_PORTRAIT
+            ITEM_TYPE_PORTRAIT
         }
     }
 
@@ -113,7 +107,7 @@ class HomeParentRecycleViewAdapter @Inject constructor(
 
     class LanscapeViewHolder private constructor(
         val binding: RecycleviewItemHomeParentBinding,
-        val adapter: HomeChildLanscapeRecycleViewAdapter
+        val adapter: HomeChildLandscapeRecycleViewAdapter
     ): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(moviesWithGenre: MoviesWithGenre) {
@@ -128,7 +122,7 @@ class HomeParentRecycleViewAdapter @Inject constructor(
         }
 
         companion object {
-            fun from(parent: ViewGroup, adapter: HomeChildLanscapeRecycleViewAdapter): LanscapeViewHolder {
+            fun from(parent: ViewGroup, adapter: HomeChildLandscapeRecycleViewAdapter): LanscapeViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = RecycleviewItemHomeParentBinding.inflate(layoutInflater, parent, false)
                 return LanscapeViewHolder(binding, adapter)
@@ -162,7 +156,8 @@ class HomeParentRecycleViewAdapter @Inject constructor(
     }
 
     class SliderViewHolder private constructor(val binding: RecycleviewItemHomeParentSliderBinding): RecyclerView.ViewHolder(binding.root) {
-        val adapter = SliderAdapterExample(binding.root.context)
+        val adapter =
+            HomChildSliderAdapter(binding.root.context)
 
         fun bind(moviesWithGenre: MoviesWithGenre) {
             adapter.renewItems(moviesWithGenre.movies.subList(0,3))
@@ -171,10 +166,10 @@ class HomeParentRecycleViewAdapter @Inject constructor(
             binding.imageSlider.setIndicatorAnimation(IndicatorAnimationType.WORM) //set indicator animation by using IndicatorAnimationType. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
 
             binding.imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
-            binding.imageSlider.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH)
-            binding.imageSlider.setIndicatorSelectedColor(Color.WHITE)
-            binding.imageSlider.setIndicatorUnselectedColor(Color.GRAY)
-            binding.imageSlider.setScrollTimeInSec(4) //set scroll delay in seconds :
+            binding.imageSlider.autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
+            binding.imageSlider.indicatorSelectedColor = Color.WHITE
+            binding.imageSlider.indicatorUnselectedColor = Color.GRAY
+            binding.imageSlider.scrollTimeInSec = 4 //set scroll delay in seconds :
 
             binding.imageSlider.startAutoCycle()
         }

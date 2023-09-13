@@ -15,8 +15,8 @@ import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils.Companion.getImagePath
 import javax.inject.Inject
 
-private const val ITEM_TYPE_LANCAPE = 0
-class HomeChildLanscapeRecycleViewAdapter
+private const val ITEM_TYPE_LANDSCAPE = 0
+class HomeChildLandscapeRecycleViewAdapter
     @Inject constructor(
         @ActitvityAbstractModule.MovieItemCallBack
         movieCallBack: DiffUtil.ItemCallback<Movie>
@@ -27,15 +27,15 @@ class HomeChildLanscapeRecycleViewAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when(viewType) {
-            ITEM_TYPE_LANCAPE -> return LanscapeViewHolder.from(parent)
+            ITEM_TYPE_LANDSCAPE -> return LandscapeViewHolder.from(parent)
         }
-        return LanscapeViewHolder.from(parent)
+        return LandscapeViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         when(holder) {
-            is LanscapeViewHolder ->  {
+            is LandscapeViewHolder ->  {
                 holder.bind(item)
                 holder.getCardView().setOnClickListener {
                     callBack?.onCLick(item)
@@ -45,14 +45,14 @@ class HomeChildLanscapeRecycleViewAdapter
     }
 
     override fun getItemViewType(position: Int): Int {
-        return ITEM_TYPE_LANCAPE
+        return ITEM_TYPE_LANDSCAPE
     }
 
     fun setCallBack(mCallback: MovieListen) {
-        this.callBack = mCallback;
+        this.callBack = mCallback
     }
 
-    class LanscapeViewHolder private constructor(val binding: RecycleviewItemHomeChildLanscapeBinding) : RecyclerView.ViewHolder(binding.root){
+    class LandscapeViewHolder private constructor(val binding: RecycleviewItemHomeChildLanscapeBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(movie: Movie) {
             Glide.with(binding.root.context)
                 .load(getImagePath(movie.backdrop_path,ConstantUtils.FILE_SIZE_LANDSCAPE))
@@ -64,10 +64,10 @@ class HomeChildLanscapeRecycleViewAdapter
         }
 
         companion object {
-            fun from(parent: ViewGroup): LanscapeViewHolder {
+            fun from(parent: ViewGroup): LandscapeViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = RecycleviewItemHomeChildLanscapeBinding.inflate(layoutInflater, parent, false)
-                return LanscapeViewHolder(binding)
+                return LandscapeViewHolder(binding)
             }
         }
     }

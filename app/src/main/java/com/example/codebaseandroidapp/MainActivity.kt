@@ -1,16 +1,17 @@
 package com.example.codebaseandroidapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.example.codebaseandroidapp.databinding.ActivityMainBinding
 import com.example.codebaseandroidapp.adapter.ViewPagerAdapter
+import com.example.codebaseandroidapp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStrategy {
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("ActivityLifecycle", "onCreate")
+        Timber.d("onCreate")
         this.supportActionBar!!.hide()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -34,49 +35,46 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
 
         binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-
             }
         })
-        for (i in 0 until binding.tabLayout.childCount) {
-            binding.tabLayout.getChildAt(i).setPadding(10, 25, 10, 0)
-        }
-
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("ActivityLifecycle", "onStart")
+        Timber.d("onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("ActivityLifecycle", "onResume")
+        Timber.d("onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("ActivityLifecycle", "onPause")
+        Timber.d("onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("ActivityLifecycle", "onStop")
+        Timber.d("onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("ActivityLifecycle", "onDestroy")
+        Timber.d("onDestroy")
     }
 
+    @Deprecated("Deprecated in Java",
+        ReplaceWith("Timber.d(\"onBackPressed\")", "timber.log.Timber")
+    )
     override fun onBackPressed() {
-        Log.d("MainActivity", "onBackPressed")
+        Timber.d("onBackPressed")
     }
 
     override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
@@ -87,11 +85,11 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
         when(position) {
             0 -> {
                 tab.text = "Home"
-                tab.setIcon(drawableHome)
+                tab.icon = drawableHome
             }
             1 -> {
                 tab.text = "Search"
-                tab.setIcon(drawableSearch)
+                tab.icon = drawableSearch
             }
         }
     }
@@ -100,7 +98,7 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
         if(binding.viewPager.currentItem == 0) {
             finish()
         } else {
-            binding.viewPager.setCurrentItem(0)
+            binding.viewPager.currentItem = 0
         }
     }
 }
