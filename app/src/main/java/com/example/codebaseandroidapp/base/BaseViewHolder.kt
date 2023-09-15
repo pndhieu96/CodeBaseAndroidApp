@@ -18,7 +18,5 @@ open class BaseViewHolder<T : Any>(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    open fun onBind(Item: T, position: Int) {
-
-    }
+    open fun onBind(Item: T, position: Int) {}
 }

@@ -1,27 +1,19 @@
 package com.example.codebaseandroidapp.adapter
 
-import android.app.Activity
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
+import com.example.codebaseandroidapp.callBack.MovieDiffCallback
 import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentBinding
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentSliderBinding
 import com.example.codebaseandroidapp.di.ActitvityAbstractModule
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.smarteist.autoimageslider.SliderView
-
 import com.smarteist.autoimageslider.SliderAnimations
-
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 private const val ITEM_TYPE_SLIDER = 0
@@ -30,40 +22,36 @@ private const val ITEM_TYPE_PORTRAIT = 2
 
 class HomeParentRecycleViewAdapter @Inject constructor(
         @ActitvityAbstractModule.MovieWithGenreItemCallBack
-        movieCallBack: DiffUtil.ItemCallback<MoviesWithGenre>,
-        activity: Activity
+        movieCallBack: DiffUtil.ItemCallback<MoviesWithGenre>
     ): ListAdapter<MoviesWithGenre, RecyclerView.ViewHolder>(
         movieCallBack
     ) {
 
-    private val hiltEntryPoint = EntryPointAccessors.fromActivity(
-        activity,
-        HomeParentRecycleViewAdapterEntryPoint::class.java
-    )
-
-    @InstallIn(ActivityComponent::class)
-    @EntryPoint
-    interface HomeParentRecycleViewAdapterEntryPoint {
-        fun homeChildLandscapeRecycleViewAdapter() : HomeChildLandscapeRecycleViewAdapter
-        fun homeChildPortraitRecycleViewAdapter() : HomeChildPortraitRecycleViewAdapter
-    }
-
-    private fun getHomeChildLandscapeRecycleViewAdapter(): HomeChildLandscapeRecycleViewAdapter {
-        return hiltEntryPoint.homeChildLandscapeRecycleViewAdapter()
-    }
-
-    private fun getHomeChildPortraitRecycleViewAdapter(): HomeChildPortraitRecycleViewAdapter {
-        return hiltEntryPoint.homeChildPortraitRecycleViewAdapter()
-    }
-
     private var callBack: MovieListen? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when(viewType) {
-            ITEM_TYPE_SLIDER -> return SliderViewHolder.from(parent)
-            ITEM_TYPE_LANDSCAPE -> return LanscapeViewHolder.from(parent, getHomeChildLandscapeRecycleViewAdapter())
-            ITEM_TYPE_PORTRAIT -> return PortraitViewHolder.from(parent, getHomeChildPortraitRecycleViewAdapter())
-            else -> return PortraitViewHolder.from(parent, getHomeChildPortraitRecycleViewAdapter())
+        return when(viewType) {
+            ITEM_TYPE_SLIDER -> {
+                SliderViewHolder.from(parent)
+            }
+            ITEM_TYPE_LANDSCAPE -> {
+                LandscapeViewHolder.from(parent,
+                    HomeChildLandscapeRecycleViewAdapter(
+                        mContext = parent.context,
+                        config = AsyncDifferConfig.Builder(MovieDiffCallback())
+                            .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor())
+                            .build())
+                )
+            }
+            else -> {
+                PortraitViewHolder.from(parent,
+                    HomeChildPortraitRecycleViewAdapter(
+                        mContext = parent.context,
+                        config = AsyncDifferConfig.Builder(MovieDiffCallback())
+                            .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor())
+                            .build())
+                )
+            }
         }
     }
 
@@ -76,7 +64,7 @@ class HomeParentRecycleViewAdapter @Inject constructor(
                     holder.setCallBack(it)
                 }
             }
-            is LanscapeViewHolder -> {
+            is LandscapeViewHolder -> {
                 holder.bind(item)
                 callBack?.let {
                     holder.setCallBack(it)
@@ -105,7 +93,7 @@ class HomeParentRecycleViewAdapter @Inject constructor(
         this.callBack = mCallback
     }
 
-    class LanscapeViewHolder private constructor(
+    class LandscapeViewHolder private constructor(
         val binding: RecycleviewItemHomeParentBinding,
         val adapter: HomeChildLandscapeRecycleViewAdapter
     ): RecyclerView.ViewHolder(binding.root) {
@@ -122,10 +110,10 @@ class HomeParentRecycleViewAdapter @Inject constructor(
         }
 
         companion object {
-            fun from(parent: ViewGroup, adapter: HomeChildLandscapeRecycleViewAdapter): LanscapeViewHolder {
+            fun from(parent: ViewGroup, adapter: HomeChildLandscapeRecycleViewAdapter): LandscapeViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = RecycleviewItemHomeParentBinding.inflate(layoutInflater, parent, false)
-                return LanscapeViewHolder(binding, adapter)
+                return LandscapeViewHolder(binding, adapter)
             }
         }
     }
@@ -156,8 +144,7 @@ class HomeParentRecycleViewAdapter @Inject constructor(
     }
 
     class SliderViewHolder private constructor(val binding: RecycleviewItemHomeParentSliderBinding): RecyclerView.ViewHolder(binding.root) {
-        val adapter =
-            HomChildSliderAdapter(binding.root.context)
+        val adapter = HomChildSliderAdapter(binding.root.context)
 
         fun bind(moviesWithGenre: MoviesWithGenre) {
             adapter.renewItems(moviesWithGenre.movies.subList(0,3))

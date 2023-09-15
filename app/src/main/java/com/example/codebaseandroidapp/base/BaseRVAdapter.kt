@@ -16,28 +16,26 @@ abstract class BaseRVAdapter<T : Any, VB : ViewBinding>(
     config: AsyncDifferConfig<T>
 ) : ListAdapter<T, BaseRVAdapter<T,VB>.ItemViewHolder>(config){
 
-    inner class ItemViewHolder(val binding: VB) : BaseViewHolder<T>(binding.root), View.OnClickListener {
-
-        override fun onBind(item: T, position: Int) {
-            super.onBind(item, position)
-            bindView(this, binding, item, position)
-        }
-
-        @Suppress("DEPRECATION")
-        override fun onClick(view: View?) {
-            try {
-                if(adapterPosition != RecyclerView.NO_POSITION) {
-                    onClickView(view, item = getItem(adapterPosition), adapterPosition)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
     abstract fun bindView(holder: ItemViewHolder, binding: VB, item: T, position: Int)
     abstract fun onClickView(view: View?, item: T, position: Int)
     abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
+
+    inner class ItemViewHolder(val binding: VB) : BaseViewHolder<T>(binding.root){
+
+        override fun onBind(mItem: T, position: Int) {
+            super.onBind(mItem, position)
+            bindView(this, binding, mItem, position)
+            binding.root.setOnClickListener {
+                try {
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        onClickView(it, item = getItem(adapterPosition), adapterPosition)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = bindingInflater.invoke(LayoutInflater.from(parent.context), parent, false)
@@ -67,19 +65,19 @@ abstract class BaseRVAdapter<T : Any, VB : ViewBinding>(
         submitList(newListData)
     }
 
-    protected open fun getContext(): Context {
+    protected fun getContext(): Context {
         return mContext
     }
 
-    protected open fun getResources(): Resources {
+    protected fun getResources(): Resources {
         return mContext.resources
     }
 
-    protected open fun getString(resId: Int): String {
+    protected fun getString(resId: Int): String {
         return mContext.getString(resId).checkNull()
     }
 
-    protected open fun getString(resId: Int, vararg objects: Any?): String {
+    protected fun getString(resId: Int, vararg objects: Any?): String {
         return mContext.getString(resId, *objects).checkNull()
     }
 }
