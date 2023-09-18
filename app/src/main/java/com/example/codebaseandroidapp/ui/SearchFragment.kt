@@ -9,7 +9,6 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -24,18 +23,17 @@ import com.example.codebaseandroidapp.databinding.FragmentSearchBinding
 import com.example.codebaseandroidapp.utils.Utils
 import com.example.codebaseandroidapp.utils.Utils.Companion.showKeyBoard
 import com.example.codebaseandroidapp.viewModel.SearchViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import retrofit2.HttpException
 import timber.log.Timber
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
 
-    @Inject lateinit var adapter: SearchAdapter
-    private val viewModel: SearchViewModel by viewModels()
+    private val adapter: SearchAdapter by inject()
+    private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

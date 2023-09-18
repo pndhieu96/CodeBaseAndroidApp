@@ -19,17 +19,15 @@ import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.model.LoveMovieId
 import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils.Companion.observer
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
 
-    private val viewModel: DetailViewModel by viewModels()
     private var id: String? = null
-
-    @Inject
-    lateinit var adapter: RelativeMoviesAdapter
+    private val viewModel: DetailViewModel by viewModel()
+    private val adapter: RelativeMoviesAdapter by inject()
 
     override fun initObserve() {
         viewModel.detailInfo.observer(viewLifecycleOwner,

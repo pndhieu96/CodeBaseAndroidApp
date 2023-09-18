@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
 }
 
@@ -110,10 +109,6 @@ dependencies {
 
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
-
-    //hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // WorkManager dependency
     implementation "androidx.work:work-runtime-ktx:$work_version"

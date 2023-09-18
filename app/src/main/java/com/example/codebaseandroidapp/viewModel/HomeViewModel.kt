@@ -4,12 +4,9 @@ import androidx.lifecycle.*
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.example.codebaseandroidapp.model.Resource
 import com.example.codebaseandroidapp.repository.MovieRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+class HomeViewModel constructor(
     val movieRepository: MovieRepository
 ): ViewModel() {
     private val _moviesWithGenre = MutableLiveData<Resource<List<MoviesWithGenre>>>()

@@ -4,7 +4,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
@@ -15,15 +14,13 @@ import com.example.codebaseandroidapp.databinding.FragmentHomeBinding
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.example.codebaseandroidapp.utils.Utils.Companion.observer
 import com.example.codebaseandroidapp.viewModel.HomeViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    @Inject lateinit var adapter: HomeParentRecycleViewAdapter
-
-    private val viewModel: HomeViewModel by viewModels()
+    private val adapter: HomeParentRecycleViewAdapter by inject()
+    private val viewModel: HomeViewModel by viewModel()
 
     override fun initObserve() {
         viewModel.moviesWithGenre.observer(

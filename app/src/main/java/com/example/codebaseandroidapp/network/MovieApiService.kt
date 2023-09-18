@@ -12,11 +12,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import javax.inject.Inject
 
-//Một retrofit service để xử lý các http request tới web service để lấy dữ liệu
+// Một retrofit service để xử lý các http request tới web service để lấy dữ liệu
 // và nhận dữ liệu trả về
-class NetWorkService//Khởi tạo 1 Service để gửi request
+class NetWorkService //Khởi tạo 1 Service để gửi request
 @Inject constructor(retrofit: Retrofit) : BaseRepo() {
-//    private val BASE_URL = "https://api.themoviedb.org/3/"
+    private val BASE_URL = "https://api.themoviedb.org/3/"
     private var movieApiService: MovieApiService? = null
 
     init {

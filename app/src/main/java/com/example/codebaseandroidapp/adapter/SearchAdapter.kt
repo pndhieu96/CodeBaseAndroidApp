@@ -13,7 +13,7 @@ import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils
 import javax.inject.Inject
 
-class SearchAdapter @Inject constructor():
+class SearchAdapter():
     PagingDataAdapter<Movie, SearchAdapter.ViewHolder>(MovieDiffCallback()) {
 
     private var callBack: MovieListen? = null

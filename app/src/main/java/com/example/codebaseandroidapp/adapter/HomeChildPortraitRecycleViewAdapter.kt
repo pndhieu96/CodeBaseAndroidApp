@@ -4,20 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.AsyncDifferConfig
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.codebaseandroidapp.base.BaseRVAdapter
 import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeChildBinding
-import com.example.codebaseandroidapp.di.ActitvityAbstractModule
 import com.example.codebaseandroidapp.model.Movie
 import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils.Companion.getImagePath
-import javax.inject.Inject
 
 class HomeChildPortraitRecycleViewAdapter
     constructor(

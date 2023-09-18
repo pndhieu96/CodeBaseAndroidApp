@@ -8,17 +8,13 @@ import com.example.codebaseandroidapp.adapter.ViewPagerAdapter
 import com.example.codebaseandroidapp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import javax.inject.Inject
 
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStrategy {
 
     private lateinit var binding : ActivityMainBinding
     private lateinit var tabLayoutMediator : TabLayoutMediator
-    @Inject
     lateinit var viewPagerAdapter : ViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +22,10 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
         Timber.d("onCreate")
         this.supportActionBar!!.hide()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
+        viewPagerAdapter = ViewPagerAdapter(
+            fragmentManager = supportFragmentManager,
+            lifecycle = lifecycle
+        )
         binding.viewPager.adapter = viewPagerAdapter
         binding.viewPager.isUserInputEnabled = false
 

@@ -8,20 +8,17 @@ import com.example.codebaseandroidapp.callBack.MovieDiffCallback
 import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentBinding
 import com.example.codebaseandroidapp.databinding.RecycleviewItemHomeParentSliderBinding
-import com.example.codebaseandroidapp.di.ActitvityAbstractModule
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.smarteist.autoimageslider.SliderView
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import java.util.concurrent.Executors
-import javax.inject.Inject
 
 private const val ITEM_TYPE_SLIDER = 0
 private const val ITEM_TYPE_LANDSCAPE = 1
 private const val ITEM_TYPE_PORTRAIT = 2
 
-class HomeParentRecycleViewAdapter @Inject constructor(
-        @ActitvityAbstractModule.MovieWithGenreItemCallBack
+class HomeParentRecycleViewAdapter constructor(
         movieCallBack: DiffUtil.ItemCallback<MoviesWithGenre>
     ): ListAdapter<MoviesWithGenre, RecyclerView.ViewHolder>(
         movieCallBack

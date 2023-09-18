@@ -13,7 +13,7 @@ import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils
 import javax.inject.Inject
 
-class RelativeMoviesAdapter @Inject constructor() : ListAdapter<Movie, RecyclerView.ViewHolder>(
+class RelativeMoviesAdapter : ListAdapter<Movie, RecyclerView.ViewHolder>(
     MovieDiffCallback()
 ) {
     private var callBack: MovieListen? = null
