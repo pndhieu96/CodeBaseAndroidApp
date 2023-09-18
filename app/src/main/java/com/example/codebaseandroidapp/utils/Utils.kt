@@ -7,7 +7,7 @@ import android.widget.EditText
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.example.codebaseandroidapp.model.ApiError
-import com.example.codebaseandroidapp.model.Resource
+import com.example.codebaseandroidapp.base.Resource
 import com.example.codebaseandroidapp.model.ResourceStatus
 
 

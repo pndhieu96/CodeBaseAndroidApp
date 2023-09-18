@@ -1,6 +1,7 @@
 package com.example.codebaseandroidapp.network
 
 import com.example.codebaseandroidapp.base.BaseRepo
+import com.example.codebaseandroidapp.base.Resource
 import com.example.codebaseandroidapp.model.*
 import com.example.codebaseandroidapp.utils.ConstantUtils.Companion.API_KEY
 import kotlinx.coroutines.Dispatchers

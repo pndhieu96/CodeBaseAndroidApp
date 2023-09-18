@@ -1,16 +1,14 @@
 package com.example.codebaseandroidapp.repository
 
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.codebaseandroidapp.base.Resource
 import com.example.codebaseandroidapp.database.AppDatabase
 import com.example.codebaseandroidapp.model.*
 import com.example.codebaseandroidapp.network.MoviePagingSource
 import com.example.codebaseandroidapp.network.NetWorkService
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 class MovieRepository constructor(
     private val database: AppDatabase,

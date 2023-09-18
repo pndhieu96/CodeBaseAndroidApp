@@ -1,6 +1,7 @@
 package com.example.codebaseandroidapp.viewModel
 
 import androidx.lifecycle.*
+import com.example.codebaseandroidapp.base.Resource
 import com.example.codebaseandroidapp.model.*
 import com.example.codebaseandroidapp.repository.MovieRepository
 import kotlinx.coroutines.launch

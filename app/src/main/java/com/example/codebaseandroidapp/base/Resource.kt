@@ -1,5 +1,7 @@
-package com.example.codebaseandroidapp.model
+package com.example.codebaseandroidapp.base
 
+import com.example.codebaseandroidapp.model.ApiError
+import com.example.codebaseandroidapp.model.ResourceStatus
 import java.util.concurrent.atomic.AtomicBoolean
 
 sealed class Resource<T>(
@@ -8,7 +10,6 @@ sealed class Resource<T>(
     val status: ResourceStatus
 ) {
     var hasBeenHandled = AtomicBoolean(false)
-        set get
 
     class Success<T>(data: T?) : Resource<T>(data = data, status = ResourceStatus.SUCCESS)
 
@@ -17,24 +18,25 @@ sealed class Resource<T>(
     class Loading<T>() : Resource<T>(status = ResourceStatus.LOADING)
 
     fun getContentIfNotHandled() : T?{
-        if(hasBeenHandled.getAndSet(true).not())
-            return data
-        else
-            return null
+        return if(hasBeenHandled.getAndSet(true).not()) {
+            data
+        } else {
+            null
+        }
     }
 
     fun getErrorIfNotHandled() : ApiError?{
-        if(hasBeenHandled.getAndSet(true).not())
-            return error
+        return if(hasBeenHandled.getAndSet(true).not())
+            error
         else
-            return null
+            null
     }
 
     fun isLoadingIfNotHandled() : Boolean? {
-        if(hasBeenHandled.getAndSet(true).not()) {
-            return status == ResourceStatus.LOADING
+        return if(hasBeenHandled.getAndSet(true).not()) {
+            status == ResourceStatus.LOADING
         } else {
-            return null
+            null
         }
     }
 }

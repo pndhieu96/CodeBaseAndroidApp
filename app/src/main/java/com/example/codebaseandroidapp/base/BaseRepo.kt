@@ -1,7 +1,6 @@
 package com.example.codebaseandroidapp.base
 
 import com.example.codebaseandroidapp.model.ApiError
-import com.example.codebaseandroidapp.model.Resource
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
