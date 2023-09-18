@@ -11,7 +11,6 @@ import android.graphics.PorterDuffColorFilter
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.adapter.RelativeMoviesAdapter
@@ -21,7 +20,6 @@ import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils.Companion.observer
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import javax.inject.Inject
 
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
 
