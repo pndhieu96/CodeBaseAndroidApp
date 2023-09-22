@@ -10,14 +10,10 @@ import com.example.codebaseandroidapp.callBack.MovieDiffCallback
 import com.example.codebaseandroidapp.callBack.MoviesWithGenreDiffCallback
 import com.example.codebaseandroidapp.database.AppDatabase
 import com.example.codebaseandroidapp.database.DATABASE_NAME
-import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.example.codebaseandroidapp.network.NetWorkService
 import com.example.codebaseandroidapp.repository.MovieRepository
 import com.example.codebaseandroidapp.utils.ConstantUtils.Companion.BASE_URL
-import com.example.codebaseandroidapp.viewModel.DetailViewModel
-import com.example.codebaseandroidapp.viewModel.HomeRootViewModel
-import com.example.codebaseandroidapp.viewModel.HomeViewModel
-import com.example.codebaseandroidapp.viewModel.SearchViewModel
+import com.example.codebaseandroidapp.viewModel.*
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -100,6 +96,9 @@ class KoinApplicationModule {
             }
             viewModel {
                 HomeRootViewModel()
+            }
+            viewModel {
+                GetDetailViewModel(get())
             }
         }
 

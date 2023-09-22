@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
 class DetailViewModel constructor(
-    val movieRepository: MovieRepository
+    private val movieRepository: MovieRepository
 ) : ViewModel() {
 
     private val _detailInfo = MutableLiveData<Resource<Detail>>()

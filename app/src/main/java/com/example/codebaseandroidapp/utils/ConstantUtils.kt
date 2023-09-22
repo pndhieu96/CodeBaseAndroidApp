@@ -27,4 +27,28 @@ class ConstantUtils {
 
         const val DELAY_TIME_MILLIS: Long = 3000
     }
+
+    class CodeAPI {
+        companion object {
+            const val CodeSignOutAllDevices: Int = 493
+            const val CodeRevokeAccount: Int = 403
+            const val CodeRevokeDeleteAccount: Int = 2006
+            const val CodeRevokeChangePassword: Int = 2012
+            const val CodeTimeOut: Int = 9999
+            const val CodeOfferUsed: Int = 1059
+            const val CodeOfferExpires: Int = 1058
+            const val CodeUnregisteredAccount: Int = 1006 // Tài khoản chưa tồn tài trong hệ thống
+            const val CodeOfferOutOfStock: Int = 1057
+            const val CodeAccountDeleteWaiting: Int = 2013 // Tài khoản đang trong thời gian chờ xóa
+            const val CodeAccountDeleted: Int = 2015 // Tài khoản đã bị xóa
+            const val CodeOTPWaiting: Int = 1033 // Chờ để gửi lại OTP
+            const val CodePhoneNumberInValid: Int = 1012 // Sdt không đúng định dạng
+            const val CodeNotShowTimes: Int = 1011 // Không có suất chiếu phù hợp
+            const val CodeIncorrectPassword: Int = 1060 // Mật khẩu không chính xác
+            const val CodeBlockPaymentSupport: Int =
+                2017 // Đã đạt tối đa số lượt gửi yêu cầu hỗ trợ
+            const val CodeMoviePassTooManyDeadLines: Int =
+                1108 // Movie đã mua vượt quá thời hạn tối đa cho phép
+        }
+    }
 }

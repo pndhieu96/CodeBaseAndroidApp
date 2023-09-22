@@ -16,8 +16,11 @@ import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.adapter.RelativeMoviesAdapter
 import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.model.LoveMovieId
+import com.example.codebaseandroidapp.network.DetailPostAPI
 import com.example.codebaseandroidapp.utils.ConstantUtils
+import com.example.codebaseandroidapp.utils.Utils.Companion.checkNetwork
 import com.example.codebaseandroidapp.utils.Utils.Companion.observer
+import com.example.codebaseandroidapp.viewModel.GetDetailViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,11 +28,22 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
 
     private var id: String? = null
     private val viewModel: DetailViewModel by viewModel()
+    private val getDetailViewModel: GetDetailViewModel by viewModel()
     private val adapter: RelativeMoviesAdapter by inject()
 
     override fun initObserve() {
-        viewModel.detailInfo.observer(viewLifecycleOwner,
-            onSuccess = {it->
+        viewModel.relativeMovies.observer(viewLifecycleOwner,
+            onSuccess = {data->
+                adapter.submitList(data.results)
+            }, onError = {error->
+                Toast.makeText(context, error.statusMessage, Toast.LENGTH_SHORT).show()
+            })
+
+        getDetailViewModel.observe(viewLifecycleOwner,
+            onShowLoading = {
+
+            },
+            onSuccess = { it, _, _ ->
                 binding.tvTitle.text = it.title
                 binding.tvDes.text = it.overview
                 binding.tvSubTitle.text =
@@ -42,17 +56,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 } else {
                     binding.btnLove.text = "Love it"
                 }
-            }, onError = {error->
-                Toast.makeText(context, error.statusMessage, Toast.LENGTH_SHORT).show()
             })
-
-        viewModel.relativeMovies.observer(viewLifecycleOwner,
-            onSuccess = {data->
-                adapter.submitList(data.results)
-            }, onError = {error->
-                Toast.makeText(context, error.statusMessage, Toast.LENGTH_SHORT).show()
-            })
-
     }
 
     override fun initialize() {
@@ -100,17 +104,15 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         binding.rvRelativeMovies.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvRelativeMovies.adapter = adapter
-
-        id?.let {
-            viewModel.getRelativeMovie("\"$it\"")
-        }
     }
 
     override fun onResume() {
         super.onResume()
         id?.let {
-            viewModel.getDetail(it)
+            callApiGetData(it)
+            viewModel.getRelativeMovie("\"$it\"")
         }
+
         requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true /* enabled by default */) {
                 override fun handleOnBackPressed() {
@@ -118,6 +120,16 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 }
             }
         )
+    }
+
+    private fun callApiGetData(id: String) {
+        requireContext().checkNetwork(
+            online = {
+                getDetailViewModel.callAPI(dataPostAPI = DetailPostAPI(id))
+            },
+            disconnect = {
+
+            })
     }
 
     companion object {
