@@ -20,7 +20,9 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.base.OthersBaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class WorkManagerFragment : OthersBaseFragment<FragmentWorkManagerBinding>(FragmentWorkManagerBinding::inflate) {
 
     private val viewModel: WorkManagerViewModel by viewModels()

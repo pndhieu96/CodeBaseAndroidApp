@@ -1,6 +1,10 @@
 package com.example.codebaseandroidapp.di
 
+import android.content.Context
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DiffUtil
+import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.callBack.MovieDiffCallback
 import com.example.codebaseandroidapp.callBack.MoviesWithGenreDiffCallback
 import com.example.codebaseandroidapp.adapter.*
@@ -13,6 +17,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.qualifiers.ActivityContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -38,7 +43,7 @@ import javax.inject.Qualifier
  */
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class ActitvityRetainedModule {
+class ActivityRetainedModule {
 
     @Provides
     fun provideHttpLogingInterceptror(): HttpLoggingInterceptor {
@@ -99,4 +104,19 @@ abstract class ActitvityAbstractModule {
     @MovieWithGenreItemCallBack
     @Binds
     abstract fun bindMovieWithGenreItemCallback(callBack: MoviesWithGenreDiffCallback) : DiffUtil.ItemCallback<MoviesWithGenre>
+}
+
+@Module
+@InstallIn(ActivityComponent::class)
+class ActitvityModule {
+
+    @Provides
+    fun provideMainActivityFragmentManager(@ActivityContext context: Context) : FragmentManager {
+        return (context as MainActivity).supportFragmentManager
+    }
+
+    @Provides
+    fun provideMainActivityLifCycle(@ActivityContext context: Context) : Lifecycle {
+        return (context as MainActivity).lifecycle
+    }
 }
