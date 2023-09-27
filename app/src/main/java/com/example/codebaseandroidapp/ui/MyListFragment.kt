@@ -13,6 +13,7 @@ import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.adapter.MyListAdapter
 import com.example.codebaseandroidapp.base.BaseFragment
+import com.example.codebaseandroidapp.base.MainBaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentMyListBinding
 import com.example.codebaseandroidapp.utils.Utils.Companion.observer
 import com.example.codebaseandroidapp.viewModel.MyListViewModel
@@ -20,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MyListFragment : BaseFragment<FragmentMyListBinding>(FragmentMyListBinding::inflate) {
+class MyListFragment : MainBaseFragment<FragmentMyListBinding>(FragmentMyListBinding::inflate) {
 
     @Inject lateinit var adapter: MyListAdapter
     private val viewModel: MyListViewModel by viewModels()
@@ -77,16 +78,6 @@ class MyListFragment : BaseFragment<FragmentMyListBinding>(FragmentMyListBinding
     override fun onResume() {
         super.onResume()
         viewModel.getMyList()
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,  // LifecycleOwner
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if(requireActivity() is MainActivity) {
-                        (requireActivity() as MainActivity).onBackPress()
-                    }
-                }
-            }
-        )
     }
 
     companion object {

@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_extenstionFragment_to_workManagerFragment"
             app:destination="@id/workManagerFragment" />
+        <action
+            android:id="@+id/action_extenstionFragment_to_demoSolidFragment"
+            app:destination="@id/demoSolidFragment" />
     </fragment>
     <fragment
         android:id="@+id/serviceFragment"
@@ -25,4 +28,8 @@
         android:name="com.example.codebaseandroidapp.ui.WorkManagerFragment"
         android:label="fragment_work_manager"
         tools:layout="@layout/fragment_work_manager" />
+    <fragment
+        android:id="@+id/demoSolidFragment"
+        android:name="com.example.codebaseandroidapp.ui.DemoSolidFragment"
+        android:label="DemoSolidFragment" />
 </navigation>

@@ -88,10 +88,6 @@ class MainActivity : AppCompatActivity(), TabLayoutMediator.TabConfigurationStra
         Log.d("ActivityLifecycle", "onDestroy")
     }
 
-    override fun onBackPressed() {
-        Log.d("MainActivity", "onBackPressed")
-    }
-
     override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
         //Khi từ fragment 1 chuyển sang fragment 2, fragment 1 sẽ ở trạng thái onPause
         //Khi từ fragment 2 back lại, fragment 1 sẽ chuyển lại trạng thái onResume

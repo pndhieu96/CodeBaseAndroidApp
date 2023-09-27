@@ -11,6 +11,7 @@ import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.adapter.HomeParentRecycleViewAdapter
 import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.base.BaseFragment
+import com.example.codebaseandroidapp.base.MainBaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentHomeBinding
 import com.example.codebaseandroidapp.model.MoviesWithGenre
 import com.example.codebaseandroidapp.utils.Utils.Companion.observer
@@ -19,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
+class HomeFragment : MainBaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     /**
      * Navigation-4
@@ -83,17 +84,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         ) {
             viewModel.getGenres()
         }
-
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,  // LifecycleOwner
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (requireActivity() is MainActivity) {
-                        (requireActivity() as MainActivity).onBackPress()
-                    }
-                }
-            }
-        )
     }
 
     private fun showError(text: String) {

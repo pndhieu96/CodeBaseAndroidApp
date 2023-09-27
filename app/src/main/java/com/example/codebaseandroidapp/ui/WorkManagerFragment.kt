@@ -19,8 +19,9 @@ import androidx.core.content.ContextCompat
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import com.example.codebaseandroidapp.base.BaseFragment
+import com.example.codebaseandroidapp.base.OthersBaseFragment
 
-class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWorkManagerBinding::inflate) {
+class WorkManagerFragment : OthersBaseFragment<FragmentWorkManagerBinding>(FragmentWorkManagerBinding::inflate) {
 
     private val viewModel: WorkManagerViewModel by viewModels()
     private val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1
@@ -52,18 +53,6 @@ class WorkManagerFragment : BaseFragment<FragmentWorkManagerBinding>(FragmentWor
                 viewModel.cancelWork()
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        requireActivity().onBackPressedDispatcher.addCallback(this,
-            object : OnBackPressedCallback(true /* enabled by default */) {
-                override fun handleOnBackPressed() {
-                    navController.popBackStack()
-                }
-            }
-        )
     }
 
     private fun showWorkInProgress() {

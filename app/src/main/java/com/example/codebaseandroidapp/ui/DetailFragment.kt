@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.adapter.RelativeMoviesAdapter
 import com.example.codebaseandroidapp.base.BaseFragment
+import com.example.codebaseandroidapp.base.OthersBaseFragment
 import com.example.codebaseandroidapp.model.LoveMovieId
 import com.example.codebaseandroidapp.utils.ConstantUtils
 import com.example.codebaseandroidapp.utils.Utils.Companion.observer
@@ -23,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
+class DetailFragment : OthersBaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
 
     private val viewModel: DetailViewModel by viewModels()
     private var id: String? = null
@@ -115,18 +116,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         id?.let {
             viewModel.getDetail(it)
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this,
-            object : OnBackPressedCallback(true /* enabled by default */) {
-                override fun handleOnBackPressed() {
-                    /**
-                     * Navigation-6
-                     * NavController
-                     * Dùng navController.PopBackStack() để back về destination trước đó trong backStack
-                     */
-                    navController.popBackStack()
-                }
-            }
-        )
     }
 
     companion object {

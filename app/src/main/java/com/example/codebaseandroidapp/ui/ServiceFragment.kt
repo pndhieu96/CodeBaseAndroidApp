@@ -21,11 +21,12 @@ import android.content.ComponentName
 import android.os.IBinder
 import android.content.ServiceConnection
 import com.example.codebaseandroidapp.base.BaseFragment
+import com.example.codebaseandroidapp.base.OthersBaseFragment
 import com.example.codebaseandroidapp.service.DeleteBoundService
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ServiceFragment : BaseFragment<FragmentServiceBinding>(FragmentServiceBinding::inflate) {
+class ServiceFragment : OthersBaseFragment<FragmentServiceBinding>(FragmentServiceBinding::inflate) {
 
     private var mBound = false
     private var mService : DeleteBoundService? = null
@@ -98,14 +99,6 @@ class ServiceFragment : BaseFragment<FragmentServiceBinding>(FragmentServiceBind
         } else {
             disableMediaButtons()
         }
-
-        requireActivity().onBackPressedDispatcher.addCallback(this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    navController.popBackStack()
-                }
-            }
-        )
     }
 
     override fun onStop() {

@@ -51,8 +51,9 @@ abstract class BaseFragment<T: ViewBinding>
         Log.d("FragmentLifecycle", "${this.javaClass.simpleName} - onViewCreated")
 
         initObserve()
-        if(isInitView.getAndSet(true).not())
+        if(isInitView.getAndSet(true).not()) {
             initialize()
+        }
     }
 
     override fun onStart() {

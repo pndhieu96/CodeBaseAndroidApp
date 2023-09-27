@@ -21,6 +21,7 @@ import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.callBack.MovieListen
 import com.example.codebaseandroidapp.adapter.SearchAdapter
 import com.example.codebaseandroidapp.base.BaseFragment
+import com.example.codebaseandroidapp.base.MainBaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentSearchBinding
 import com.example.codebaseandroidapp.utils.Utils
 import com.example.codebaseandroidapp.utils.Utils.Companion.showKeyBoard
@@ -32,7 +33,7 @@ import retrofit2.HttpException
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
+class SearchFragment : MainBaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
 
     @Inject lateinit var adapter: SearchAdapter
     private val viewModel: SearchViewModel by viewModels()
@@ -144,16 +145,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             focusEditText()
         }
         viewModel.backToAnother = false
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,  // LifecycleOwner
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if(requireActivity() is MainActivity) {
-                        (requireActivity() as MainActivity).onBackPress()
-                    }
-                }
-            }
-        )
     }
 
     private fun focusEditText() {
