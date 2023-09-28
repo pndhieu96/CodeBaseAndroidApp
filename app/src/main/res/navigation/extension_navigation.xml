@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/extenstionFragment"
-        android:name="com.example.codebaseandroidapp.ui.ExtenstionFragment"
+        android:name="com.example.codebaseandroidapp.ui.ExtensionFragment"
         android:label="ExtenstionFragment" >
         <action
             android:id="@+id/action_extenstionFragment_to_serviceFragment"
@@ -18,6 +18,12 @@
         <action
             android:id="@+id/action_extenstionFragment_to_demoSolidFragment"
             app:destination="@id/demoSolidFragment" />
+        <action
+            android:id="@+id/action_extenstionFragment_to_demoThreadProcessFragment"
+            app:destination="@id/demoThreadProcessFragment" />
+        <action
+            android:id="@+id/action_extenstionFragment_to_demoReactiveExtensionFragment"
+            app:destination="@id/demoReactiveExtensionFragment" />
     </fragment>
     <fragment
         android:id="@+id/serviceFragment"
@@ -32,4 +38,12 @@
         android:id="@+id/demoSolidFragment"
         android:name="com.example.codebaseandroidapp.ui.DemoSolidFragment"
         android:label="DemoSolidFragment" />
+    <fragment
+        android:id="@+id/demoThreadProcessFragment"
+        android:name="com.example.codebaseandroidapp.ui.DemoThreadProcessFragment"
+        android:label="DemoThreadProcessFragment" />
+    <fragment
+        android:id="@+id/demoReactiveExtensionFragment"
+        android:name="com.example.codebaseandroidapp.ui.DemoReactiveExtensionFragment"
+        android:label="DemoReactiveExtensionFragment" />
 </navigation>

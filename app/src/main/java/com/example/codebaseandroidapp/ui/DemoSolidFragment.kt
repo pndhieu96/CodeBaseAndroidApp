@@ -70,7 +70,11 @@ class User(
     var phone: String,
     var name: String,
     var eName: String
-)
+) {
+    override fun toString(): String {
+        return "User(phone='$phone', name='$name', eName='$eName')"
+    }
+}
 
 class UserController @Inject constructor() {
     fun getUserByPhone(phone: String): User {

@@ -1,14 +1,10 @@
 package com.example.codebaseandroidapp.ui
 
-import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
-import com.example.codebaseandroidapp.MainActivity
 import com.example.codebaseandroidapp.R
-import com.example.codebaseandroidapp.base.BaseFragment
 import com.example.codebaseandroidapp.base.MainBaseFragment
-import com.example.codebaseandroidapp.databinding.FragmentExtenstionBinding
+import com.example.codebaseandroidapp.databinding.FragmentExtensionBinding
 
-class ExtenstionFragment : MainBaseFragment<FragmentExtenstionBinding>(FragmentExtenstionBinding::inflate) {
+class ExtensionFragment : MainBaseFragment<FragmentExtensionBinding>(FragmentExtensionBinding::inflate) {
 
     override fun initObserve() {
     }
@@ -23,10 +19,16 @@ class ExtenstionFragment : MainBaseFragment<FragmentExtenstionBinding>(FragmentE
         binding.btnSolid.setOnClickListener {
             navController.navigate(R.id.action_extenstionFragment_to_demoSolidFragment)
         }
+        binding.btnThread.setOnClickListener {
+            navController.navigate(R.id.action_extenstionFragment_to_demoThreadProcessFragment)
+        }
+        binding.btnRx.setOnClickListener {
+            navController.navigate(R.id.action_extenstionFragment_to_demoReactiveExtensionFragment)
+        }
     }
 
     companion object {
        @JvmStatic
-        fun newInstance() = ExtenstionFragment()
+        fun newInstance() = ExtensionFragment()
     }
 }

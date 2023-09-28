@@ -11,13 +11,15 @@
             android:id="@+id/tv_email_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_blank_fragment" />
+            android:textColor="@color/black"
+            tools:text="@string/hello_blank_fragment" />
 
         <TextView
             android:id="@+id/tv_phone_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_blank_fragment" />
+            android:textColor="@color/black"
+            tools:text="@string/hello_blank_fragment" />
 
     </LinearLayout>
 </layout>
