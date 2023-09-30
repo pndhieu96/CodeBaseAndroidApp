@@ -42,7 +42,6 @@ abstract class BaseFragment<T: ViewBinding>
         if(_binding == null) {
             _binding = inflateMethod.invoke(inflater, container, false)
         }
-
         return binding.root
     }
 

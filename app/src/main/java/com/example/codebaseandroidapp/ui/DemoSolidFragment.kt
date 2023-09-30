@@ -12,7 +12,9 @@ import com.example.codebaseandroidapp.base.OthersBaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentDemoSolidBinding
 import com.example.codebaseandroidapp.di.FragmentModule
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.core.Observable
 import java.io.Console
+import java.io.Serializable
 import javax.inject.Inject
 import kotlin.math.E
 
@@ -66,13 +68,19 @@ class DemoSolidFragment : OthersBaseFragment<FragmentDemoSolidBinding>(FragmentD
     }
 }
 
-class User(
+data class User(
     var phone: String,
     var name: String,
     var eName: String
-) {
+) : Serializable {
     override fun toString(): String {
         return "User(phone='$phone', name='$name', eName='$eName')"
+    }
+
+    fun getNameObservable(): Observable<String> {
+        return Observable.defer {
+            return@defer Observable.just(this.name)
+        }
     }
 }
 
