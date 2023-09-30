@@ -121,10 +121,24 @@ Vây sự khác biệt giữa map và flatMap phụ thuộc vào yêu cầu cụ
 thành một phần tử mới, sử dụng map. Nếu bạn muốn biến đổi và tạo ra một loạt các phần tử mới hoặc làm việc với
 nhiều Observable khác nhau, hãy sử dụng flatMap.
 
-7. chúng ta sử dụng Observable.zip để gọi hai API callApi1() và callApi2() song song. Khi cả hai API đều hoàn
-thành, hàm BiFunction sẽ được gọi để kết hợp kết quả từ hai API thành một đối tượng CombinedResult. Sau đó,
-bạn có thể xử lý kết quả hoặc hiển thị nó.
+7. merge, zip
+- Merge (Observable.merge):
+merge được sử dụng để kết hợp các luồng dữ liệu thành một luồng duy nhất.
+Nó không quan tâm đến thời điểm phát ra dữ liệu từ các luồng gốc. Dữ liệu từ bất kỳ luồng nào sẵn sàng
+sẽ được đưa vào luồng kết quả ngay lập tức.
+Kết quả có thể chứa dữ liệu từ các luồng gốc theo thứ tự ngẫu nhiên.
 
+- Zip (Observable.zip):
+zip được sử dụng để kết hợp dữ liệu từ các luồng thành các cặp dữ liệu tương ứng.
+Nó yêu cầu tất cả các luồng phải phát ra dữ liệu cùng một lúc để tạo cặp dữ liệu.
+Kết quả có thể chứa các cặp dữ liệu được kết hợp từ các luồng gốc theo thứ tự tương ứng.
+
+ví dụ: chúng ta sử dụng Observable.zip để gọi hai API callApi1() và callApi2() song song. Khi cả hai API đều
+hoàn thành, hàm BiFunction sẽ được gọi để kết hợp kết quả từ hai API thành một đối tượng CombinedResult.
+Sau đó,bạn có thể xử lý kết quả hoặc hiển thị nó.
+
+=> Nói cách khác, merge gộp các luồng mà không quan tâm đến thời điểm phát ra, trong khi zip kết hợp dữ liệu
+ tương ứng từ các luồng theo thứ tự.
 */
 @AndroidEntryPoint
 class DemoReactiveExtensionFragment :
