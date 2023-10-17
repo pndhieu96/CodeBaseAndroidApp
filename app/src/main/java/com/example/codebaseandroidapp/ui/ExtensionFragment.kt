@@ -25,6 +25,12 @@ class ExtensionFragment : MainBaseFragment<FragmentExtensionBinding>(FragmentExt
         binding.btnRx.setOnClickListener {
             navController.navigate(R.id.action_extenstionFragment_to_demoReactiveExtensionFragment)
         }
+        binding.btnCoroutine.setOnClickListener {
+            navController.navigate(R.id.action_extenstionFragment_to_demoCoroutineFragment)
+        }
+        binding.btnRetrofit.setOnClickListener {
+            navController.navigate(R.id.action_extenstionFragment_to_demoReactiveExtensionFragment)
+        }
     }
 
     companion object {

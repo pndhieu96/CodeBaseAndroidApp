@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_extenstionFragment_to_demoReactiveExtensionFragment"
             app:destination="@id/demoReactiveExtensionFragment" />
+        <action
+            android:id="@+id/action_extenstionFragment_to_demoCoroutineFragment"
+            app:destination="@id/demoCoroutineFragment" />
     </fragment>
     <fragment
         android:id="@+id/serviceFragment"
@@ -46,4 +49,8 @@
         android:id="@+id/demoReactiveExtensionFragment"
         android:name="com.example.codebaseandroidapp.ui.DemoReactiveExtensionFragment"
         android:label="DemoReactiveExtensionFragment" />
+    <fragment
+        android:id="@+id/demoCoroutineFragment"
+        android:name="com.example.codebaseandroidapp.ui.DemoCoroutineFragment"
+        android:label="DemoCoroutineFragment" />
 </navigation>

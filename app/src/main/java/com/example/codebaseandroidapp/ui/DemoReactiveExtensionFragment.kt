@@ -10,6 +10,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.BiFunction
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.schedulers.Schedulers.io
 import java.io.Serializable
 import java.util.concurrent.TimeUnit
@@ -152,32 +154,17 @@ class DemoReactiveExtensionFragment :
 
     override fun initObserve() {
 //        createObservable().subscribeOn(io()).observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(createObserver())
-
-//        createObservable().subscribeOn(io()).observeOn(AndroidSchedulers.mainThread())
 //            .subscribe(createSerializableObserver())
-
-//        createObservable().subscribeOn(io()).observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(createLongObserver())
-
-//        createObservable().subscribeOn(io()).observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(createIntObserver())
-
-//        numbers2.subscribeOn(io()).observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(createIntObserver())
 
 //        var observable = createObservable()
 //        user?.name = "hieu day roi 1"
 //        observable.subscribeOn(io()).observeOn(AndroidSchedulers.mainThread())
 //            .subscribe(createSerializableObserver())
-//
-//        observable = createObservable()
-//        user?.name = "hieu day roi 2"
-//        observable.subscribeOn(io()).observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(createSerializableObserver())
 
 //        demoMap()
 //        demoFlatmap()
+//        demoMerge()
+        demoZip()
     }
 
     override fun initialize() {
@@ -257,18 +244,6 @@ class DemoReactiveExtensionFragment :
 //        return user!!.getNameObservable()
     }
 
-    private fun createObserver() = object: DemoReactiveExtensionObservable<User>(binding) {
-        override fun onSubscribe(d: Disposable) {
-            super.onSubscribe(d)
-            disposable = d
-        }
-
-        override fun onNext(t: User) {
-            val info = "${binding.tvReactive.text} \n\n ${t.toString()}"
-            binding.tvReactive.text = info
-        }
-    }
-
     private fun createSerializableObserver() = object: DemoReactiveExtensionObservable<Serializable>(binding) {
         override fun onSubscribe(d: Disposable) {
             super.onSubscribe(d)
@@ -345,6 +320,43 @@ class DemoReactiveExtensionFragment :
             }
             binding.tvReactive.text = info
         }
+    }
+
+    private fun demoMerge() {
+        val source1 = Observable.interval(1, TimeUnit.SECONDS)
+            .map { "Source 1: $it" }
+            .take(5)
+            .subscribeOn(io())
+
+        val source2 = Observable.interval(500, TimeUnit.MILLISECONDS)
+            .map { "Source 2: $it" }
+            .take(5)
+            .subscribeOn(io())
+
+        Observable.merge(source1, source2)
+            .subscribe { println("Merge received: $it") }
+    }
+
+    private fun demoZip() {
+        val source1 = Observable.interval(1, TimeUnit.SECONDS)
+            .take(5)
+            .subscribeOn(io())
+
+        val source2 = Observable.interval(500, TimeUnit.MILLISECONDS)
+            .take(5)
+            .subscribeOn(io())
+
+        val source3 = Observable.interval(500, TimeUnit.MILLISECONDS)
+            .map { it -> it%2==0L }
+            .take(5)
+            .subscribeOn(io())
+
+        Observable.zip(
+            source1,
+            source2,
+            source3
+        ) { t1, t2, t3 -> "$t1-$t2-$t3" }
+        .subscribe { println("Zip received: $it") }
     }
 
     private fun demoMap() {
