@@ -7,19 +7,40 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_email_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            tools:text="@string/hello_blank_fragment" />
+        <Button
+            android:id="@+id/btn_increase_count"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Increase count"/>
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="15dp"
+            android:text="Start"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            android:layout_marginBottom="10dp"/>
 
         <TextView
-            android:id="@+id/tv_phone_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/tv_count"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
             android:textColor="@color/black"
-            tools:text="@string/hello_blank_fragment" />
-
+            android:gravity="center_vertical"
+            android:text="0"/>
+        <TextView
+            android:id="@+id/tv_data"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:text="0"/>
     </LinearLayout>
 </layout>
