@@ -117,7 +117,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     // ktx android
-    implementation 'androidx.fragment:fragment-ktx:1.5.5'
+    implementation 'androidx.fragment:fragment-ktx:1.6.1'
 
     // the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
@@ -126,7 +126,7 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
     implementation 'com.google.firebase:firebase-messaging'
 }
