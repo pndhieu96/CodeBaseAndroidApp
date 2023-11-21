@@ -20,7 +20,10 @@ abstract class BaseFragment<T: ViewBinding>
     val navController: NavController by lazy { NavHostFragment.findNavController(this) }
     var isInitView = AtomicBoolean(false)
 
+    //Lắng nghe sự kiện từ viewModel
     abstract fun initObserve()
+
+    //Khởi tạo view
     abstract fun initialize()
 
     override fun onAttach(context: Context) {

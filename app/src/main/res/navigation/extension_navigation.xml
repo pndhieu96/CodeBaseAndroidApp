@@ -52,5 +52,21 @@
     <fragment
         android:id="@+id/demoCoroutineFragment"
         android:name="com.example.codebaseandroidapp.ui.DemoCoroutineFragment"
-        android:label="DemoCoroutineFragment" />
+        android:label="DemoCoroutineFragment" >
+        <action
+            android:id="@+id/action_demoCoroutineFragment_to_demoCoroutineScopeFragment"
+            app:destination="@id/demoCoroutineScopeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoCoroutineScopeFragment"
+        android:name="com.example.codebaseandroidapp.ui.DemoCoroutineScopeFragment"
+        android:label="DemoCoroutineScopeFragment" >
+        <action
+            android:id="@+id/action_demoCoroutineScopeFragment_to_demoCoroutineExceptionHandler"
+            app:destination="@id/demoCoroutineExceptionHandler" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoCoroutineExceptionHandler"
+        android:name="com.example.codebaseandroidapp.ui.DemoCoroutineExceptionHandler"
+        android:label="DemoCoroutineExceptionHandler" />
 </navigation>

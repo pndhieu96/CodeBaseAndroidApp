@@ -1,5 +1,6 @@
 package com.example.codebaseandroidapp.ui
 
+import android.util.Log
 import com.example.codebaseandroidapp.base.OthersBaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentDemoThreadProcessBinding
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -68,14 +69,17 @@ class DemoThreadProcessFragment : OthersBaseFragment<FragmentDemoThreadProcessBi
 
     private fun start() {
         Thread {
+            Log.d("ThreadProcessFragment","Thread 1 requests data on ${Thread.currentThread().name}")
             startProcessInUiThread(binding.lpiProcess, 50)
         }.start()
 
         Thread {
+            Log.d("ThreadProcessFragment","Thread 2 requests data on ${Thread.currentThread().name}")
             startProcessInUiThread(binding.lpiProcess1, 10)
         }.start()
 
         Thread {
+            Log.d("ThreadProcessFragment","Thread 3 requests data on ${Thread.currentThread().name}")
             startProcessInUiThread(binding.lpiProcess2,30)
         }.start()
     }
