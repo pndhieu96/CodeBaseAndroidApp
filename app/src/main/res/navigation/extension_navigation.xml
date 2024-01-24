@@ -51,15 +51,24 @@
         android:label="DemoReactiveExtensionFragment" />
     <fragment
         android:id="@+id/demoCoroutineFragment"
-        android:name="com.example.codebaseandroidapp.ui.DemoCoroutineFragment"
+        android:name="com.example.codebaseandroidapp.ui.Coroutine.DemoCoroutineFragment"
         android:label="DemoCoroutineFragment" >
         <action
             android:id="@+id/action_demoCoroutineFragment_to_demoCoroutineScopeFragment"
             app:destination="@id/demoCoroutineScopeFragment" />
+        <action
+            android:id="@+id/action_demoCoroutineFragment_to_demoCoroutineMulRequestSequentialFragment"
+            app:destination="@id/demoCoroutineMulRequestSequentialFragment" />
+        <action
+            android:id="@+id/action_demoCoroutineFragment_to_demoCoroutineMulRequestConcurrencyFragment"
+            app:destination="@id/demoCoroutineMulRequestConcurrencyFragment" />
+        <action
+            android:id="@+id/action_demoCoroutineFragment_to_demoCoroutineSingelRequestFragment"
+            app:destination="@id/demoCoroutineSingelRequestFragment" />
     </fragment>
     <fragment
         android:id="@+id/demoCoroutineScopeFragment"
-        android:name="com.example.codebaseandroidapp.ui.DemoCoroutineScopeFragment"
+        android:name="com.example.codebaseandroidapp.ui.Coroutine.DemoCoroutineScopeFragment"
         android:label="DemoCoroutineScopeFragment" >
         <action
             android:id="@+id/action_demoCoroutineScopeFragment_to_demoCoroutineExceptionHandler"
@@ -67,6 +76,18 @@
     </fragment>
     <fragment
         android:id="@+id/demoCoroutineExceptionHandler"
-        android:name="com.example.codebaseandroidapp.ui.DemoCoroutineExceptionHandler"
+        android:name="com.example.codebaseandroidapp.ui.Coroutine.DemoCoroutineExceptionHandler"
         android:label="DemoCoroutineExceptionHandler" />
+    <fragment
+        android:id="@+id/demoCoroutineSingelRequestFragment"
+        android:name="com.example.codebaseandroidapp.ui.Coroutine.DemoCoroutineSingelRequestFragment"
+        android:label="DemoCoroutineSingelRequestFragment" />
+    <fragment
+        android:id="@+id/demoCoroutineMulRequestConcurrencyFragment"
+        android:name="com.example.codebaseandroidapp.ui.Coroutine.DemoCoroutineMulRequestConcurrencyFragment"
+        android:label="DemoCoroutineMulRequestConcurrencyFragment" />
+    <fragment
+        android:id="@+id/demoCoroutineMulRequestSequentialFragment"
+        android:name="com.example.codebaseandroidapp.ui.Coroutine.DemoCoroutineMulRequestSequentialFragment"
+        android:label="DemoCoroutineMulRequestSequentialFragment" />
 </navigation>

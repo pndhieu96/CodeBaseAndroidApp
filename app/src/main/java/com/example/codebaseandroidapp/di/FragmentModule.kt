@@ -33,7 +33,7 @@ class FragmentModule {
     @EmailController
     @Provides
     fun provideEmailController(
-        sender: PhoneSender
+        sender: EmailSender
     ) : SenderController {
         return SenderController(sender)
     }
@@ -41,7 +41,7 @@ class FragmentModule {
     @PhoneController
     @Provides
     fun providePhoneController(
-        sender: EmailSender
+        sender: PhoneSender
     ) : SenderController {
         return SenderController(sender)
     }

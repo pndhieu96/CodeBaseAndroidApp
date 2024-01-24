@@ -1,12 +1,10 @@
-package com.example.codebaseandroidapp.ui
+package com.example.codebaseandroidapp.ui.Coroutine
 
 import android.util.Log
 import android.view.View
-import androidx.navigation.Navigation
 import com.example.codebaseandroidapp.R
 import com.example.codebaseandroidapp.base.OthersBaseFragment
 import com.example.codebaseandroidapp.databinding.FragmentDemoCoroutineBinding
-import com.google.firebase.components.ComponentRuntime
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -38,7 +36,7 @@ import java.lang.Exception
 *       - Default, Để dùng cho việc xử lý dữ liệu mất nhiều thời gian (Như làm việc với một mảng danh sách dữ liệu lớn)
 *       - Main, Để dùng cho tương tác và hiển thị cho người dùng
 *       - Unconfined: Coroutine scope khai báo ở Dispatcher Unconfined thì khi dùng withcontext để xử lý ở thread
-*           khác thì sau khi xử lý xong thread ở coroutine scope sẽ resume ở dispatcher của withcontext
+*           khác thì sau khi xử lý xong thì thread ở coroutine scope sẽ resume ở dispatcher của withcontext
 *       - WithContext: Dùng để chuyển qua lại giữa các dispatcher trong 1 coroutine scope
 *   2. Job: Để quản lý vòng đời của coroutine
 *       - Job.invokeOnCompletion: Để theo dõi job đã chạy xong chưa, thành công hay có lỗi
@@ -85,7 +83,7 @@ class DemoCoroutineFragment
         }
         binding.btnStart.setOnClickListener {
             requestDataWithSuspend()
-//            demoLauchAndAsync()
+//            demoLaunchAndAsync()
 //            demoInvokeOnCompletionAndLifeCycle()
 //            demoCoroutineExceptionHandler()
 //            demoCancellation()
@@ -93,6 +91,15 @@ class DemoCoroutineFragment
         }
         binding.btnCoroutineScope.setOnClickListener {
             navController.navigate(R.id.action_demoCoroutineFragment_to_demoCoroutineScopeFragment)
+        }
+        binding.btnSingleRequest.setOnClickListener {
+            navController.navigate(R.id.action_demoCoroutineFragment_to_demoCoroutineSingelRequestFragment)
+        }
+        binding.btnMulRequestSequential.setOnClickListener {
+            navController.navigate(R.id.action_demoCoroutineFragment_to_demoCoroutineMulRequestSequentialFragment)
+        }
+        binding.btnMulRequestConcurrency.setOnClickListener {
+            navController.navigate(R.id.action_demoCoroutineFragment_to_demoCoroutineMulRequestConcurrencyFragment)
         }
     }
 
@@ -126,7 +133,7 @@ class DemoCoroutineFragment
         }
     }
 
-    private fun demoLauchAndAsync() {
+    private fun demoLaunchAndAsync() {
         val mainScope = CoroutineScope(Dispatchers.Main)
         binding.progressBar.visibility = View.VISIBLE
         binding.tvData.text = ""

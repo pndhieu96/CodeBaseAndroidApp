@@ -35,6 +35,7 @@ class DemoCoroutineExceptionHandlerViewModel @Inject constructor() : ViewModel()
                     Log.d("CoExceptionHandlerVM", "Exception: ${e.message}")
                 }
             }
+            Log.d("CoExceptionHandlerVM", "Load done")
         }
         job?.invokeOnCompletion {
             Log.d("CoExceptionHandlerVM", "Job finish ${it?.message ?: ""}")
